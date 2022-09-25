@@ -1,0 +1,549 @@
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Nunito", sans-serif;
+  transition: all 0.2s linear;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.header-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #eee;
+  padding: 2rem 9%;
+}
+
+.header-1 a {
+  text-decoration: none;
+  color: #27ae60;
+  font-size: 2rem;
+  font-family: "Comic Neue", cursive;
+  /* padding: 2rem 9%; */
+}
+
+.search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.search input,
+.search button {
+  height: 35px;
+  padding: 0 10px;
+  border: 1px solid gray;
+  outline: none;
+}
+
+.search button {
+  background-color: #27ae60;
+  cursor: pointer;
+}
+
+.search button label {
+  cursor: pointer;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+nav {
+  background-color: #fff;
+  padding: 2rem 3rem 2rem 5px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.activeHead {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+nav ul li {
+  list-style: none;
+  display: inline-block;
+  padding: 0 10px;
+}
+
+.move {
+  display: flex;
+  position: relative;
+  float: right;
+  gap: 3rem;
+}
+
+.move .fas {
+  font-size: 1.5rem;
+}
+
+.account {
+  position: absolute;
+  right: -2rem;
+  width: 150px;
+  background-color: #ede734;
+  display: none;
+  z-index: 10;
+}
+
+.account li {
+  text-align: center;
+  display: block;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.account li:hover {
+  background-color: rgb(168, 168, 10);
+}
+
+.dropaccount:hover > .account {
+  visibility: visible;
+  display: block;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+nav ul li a:not(.list li a, .move a):hover {
+  text-decoration: underline;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown .list {
+  position: absolute;
+  background-color: #27ae60;
+  top: 20px;
+  left: -50%;
+  transform: translateX(-17%);
+  z-index: 1;
+  text-align: center;
+  display: none;
+  visibility: hidden;
+  width: 300px;
+  border-radius: 5px;
+}
+
+.list li {
+  display: inline-block;
+  cursor: pointer;
+  /* width: 100%; */
+  padding: 10px;
+}
+
+/* .list li:first-child {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+} */
+
+/* .list li:last-child {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+} */
+
+.list li:hover {
+  background-color: lightgreen;
+}
+
+.list::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  border-right: 10px solid transparent;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid #27ae60;
+  transform: rotate(135deg);
+}
+
+.list::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -6px;
+  height: 10px;
+  background-color: transparent;
+}
+
+.dropdown:hover > .list {
+  display: block;
+  visibility: visible;
+}
+
+.container {
+  max-width: 1280px;
+  padding: 2%;
+  margin: auto;
+}
+
+.heading {
+  text-align: center;
+  color: #2c2c54;
+}
+
+.heading span {
+  color: #27ae60;
+}
+
+.FormRegister,
+.FormLogin,
+.formForgot {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  gap: 20px;
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 10px;
+}
+
+.form {
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.form label span {
+  display: inline-block;
+  width: 120px;
+}
+
+.form label input {
+  padding: 7px 5px;
+  outline: none;
+  width: 100%;
+}
+
+.form label .boxForm {
+  flex: 1;
+  height: 50px;
+}
+
+.err {
+  color: red;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.forgot {
+  display: block;
+  margin: auto;
+}
+
+.forgot a {
+  text-decoration: none;
+  color: black;
+}
+
+.forgot a:hover {
+  font-weight: bold;
+}
+
+.password::placeholder {
+  position: absolute;
+  top: 35%;
+}
+
+.form input[type="submit"] {
+  width: 100px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: 20px auto;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active,
+.dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+/* .fade {
+  background-color: aqua;
+} */
+
+.fade img {
+  max-height: 415px;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.box-product {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.box-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  inset: 0;
+  border: 0.1rem solid rgba(0, 0, 0, 0.3);
+  text-align: center;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.box-item img {
+  max-width: 14rem;
+}
+
+.box-item .img {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.box-item h3 {
+  font-size: 25px;
+  color: #2c2c54;
+}
+
+.box-item .price {
+  color: #333;
+  margin: 10px 0;
+}
+
+.box-item .price span {
+  color: #999;
+  text-decoration: line-through;
+}
+
+.box-item .quantity {
+  text-transform: capitalize;
+}
+
+.box-item .quantity input {
+  border: 0.1rem solid rgba(0, 0, 0, 0.3);
+  font-size: 1rem;
+  font-weight: bolder;
+  color: var(--black);
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid gray;
+  outline: none;
+  margin-bottom: 7px;
+}
+
+.btn {
+  display: block;
+  background-color: #27ae60;
+  padding: 10px 0;
+  border-radius: 5px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: lightgreen;
+}
+
+.sale {
+  position: absolute;
+  background-color: lightseagreen;
+  color: red;
+  font-size: 1.2rem;
+  padding: 10px 12px;
+  font-weight: bold;
+  user-select: none;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  transform: translateX(2.7rem);
+  color: #2c2c54;
+  gap: 10px;
+}
+
+.icons a:hover {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.icons a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 10px;
+  background-color: #ede734;
+  border-radius: 50%;
+}
+
+.box-item:hover .icons {
+  transform: translateX(0);
+}
+
+.contact {
+  background-color: #ede734;
+  padding: 1rem;
+}
+
+.contact form {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.contact h2 {
+  text-align: center;
+  color: #2c2c54;
+  font-family: "Inter", sans-serif;
+  margin-bottom: 2rem;
+  font-size: 30px;
+}
+
+.contactForm {
+  display: flex;
+  gap: 30px;
+  margin: 0 auto 15px auto;
+}
+
+.formInfor {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formInfor label h4 {
+  margin-bottom: 8px;
+}
+
+.contactForm .formInfor label input {
+  outline: none;
+  padding: 10px 10px;
+  width: 100%;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+.formInfor {
+  flex: 1 1;
+}
+
+.message {
+  border: 1px solid gray;
+  border-radius: 5px;
+  width: 100%;
+  outline: none;
+  padding: 10px 10px;
+}
+
+.sendContact,
+.sendpass {
+  display: block;
+  background-color: #000000;
+  padding: 10px 15px;
+  color: #ffff;
+  font-weight: bold;
+  border-radius: 5px;
+  margin: auto;
+  cursor: pointer;
+}
+
+.sendpass {
+  margin-left: 10px;
+}
