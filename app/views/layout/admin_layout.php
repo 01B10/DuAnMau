@@ -8,5 +8,4 @@
         $this->render($content);
 
     }
-    $this->render("admin/block/footer");
 ?>

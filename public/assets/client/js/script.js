@@ -1,20 +1,19 @@
 var rg = /Trang-Chu|Trang-Chu\w./;
+let slideIndex = 0;
+let nav = document.querySelector("nav");
+
+window.onscroll = () => {
+  if (window.scrollY > 90) {
+    nav.classList.add("activeHead");
+  } else {
+    nav.classList.remove("activeHead");
+  }
+};
 
 if (
   rg.exec(window.location.href) ||
   window.location.href == "http://localhost/BaseProject/"
 ) {
-  let slideIndex = 0;
-  let nav = document.querySelector("nav");
-
-  window.onscroll = () => {
-    if (window.scrollY > 150) {
-      nav.classList.add("activeHead");
-    } else {
-      nav.classList.remove("activeHead");
-    }
-  };
-
   showSlides();
 
   function showSlides() {

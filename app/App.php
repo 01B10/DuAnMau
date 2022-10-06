@@ -1,6 +1,6 @@
 <?php 
     class App{
-        private $__controller,$__action,$__params,$__routes;
+        private $__controller,$__action,$__params,$__routes,$__db;
 
         static $app;
         public $test;
@@ -15,6 +15,11 @@
             $this->__action = "index";
             $this->__params = [];
             $this->__routes = new routes();
+            if(class_exists("DB")){
+                $dbObject = new DB();
+                $this->__db = $dbObject->db;
+            }
+
             $this->handleUrl();
         }
 
@@ -49,6 +54,9 @@
                 if(class_exists($this->__controller)){
                     $this->__controller = new $this->__controller();
                     unset($arr[0]);
+                    if(!empty($this->__db)){
+                        $this->__controller->db = $this->__db;
+                    }
                 }
             }else{
                 $this->LoadErr();

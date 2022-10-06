@@ -14,23 +14,29 @@
     if(!empty($file)){
         foreach($file as $item){
             if($item != "." && $item != ".." && file_exists("./config/".$item)){
-                require "./config/".$item;
+                require_once "./config/".$item;
             }
         }
     }
-    require "./core/routes.php";
-    require "./app/App.php";
+    require_once "./core/routes.php";
+    require_once "./app/App.php";
 
 
     if(!empty($config)){
         $db_config = array_filter($config["database"]);
         if(!empty($db_config)){
-            require "./core/connection.php";
-            require "./core/database.php";
+            require_once "./core/connection.php";
+            require_once "./core/QueryBuilder.php";
+            require_once "./core/database.php";
+            require_once "./core/DB.php";
         }
     }
 
-    require "./core/Model.php";
+    require_once "./core/Model.php";
 
-    require "./core/controller.php";
+    require_once "./core/controller.php";
+
+    require_once "./core/Request.php";
+
+    require_once "./core/Response.php";
 ?>

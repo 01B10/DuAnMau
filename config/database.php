@@ -3,6 +3,6 @@
         'host' => "localhost",
         'user' => "root",
         'pass' => "",
-        'db' => "qlsinhvien",
+        'db' => "duanmau",
     ]
 ?>

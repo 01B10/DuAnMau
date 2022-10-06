@@ -6,27 +6,26 @@
         <div class="formProduct">
             <label for="">
                 <h4>Mã hàng hóa</h4>
-                <input type="text" name="mahanghoa" disabled placeholder="Auto number">
+                <input type="text" name="mahanghoa" disabled placeholder="<?php echo $itemProduct[0]["MaHangHoa"]?>">
             </label>
             <label for="">
                 <h4>Tên hàng hóa</h4>
-                <input type="text" name="TenHangHoa" value="<?php if(!empty($data["field"]["TenHangHoa"])){echo $data["field"]["TenHangHoa"];}?>">
+                <input type="text" name="TenHangHoa" value="<?php if(!empty($data["field"]["TenHangHoa"])){echo $data["field"]["TenHangHoa"];}else{echo $itemProduct[0]["TenHangHoa"];}?>">
                 <p class="err"><?php echo (!empty($errors) && array_key_exists("TenHangHoa",$errors))?$errors["TenHangHoa"]:false;?></p>
             </label>
             <label for="">
                 <h4>Đơn giá</h4>
-                <input type="text" name="DonGia" value="<?php if(!empty($data["field"]["DonGia"])){echo $data["field"]["DonGia"];}?>">
+                <input type="text" name="DonGia" value="<?php if(!empty($data["field"]["DonGia"])){echo $data["field"]["DonGia"];}else{echo $itemProduct[0]["DonGia"];}?>">
                 <p class="err"><?php echo (!empty($errors) && array_key_exists("DonGia",$errors))?$errors["DonGia"]:false;?></p>
             </label>
             <label for="">
                 <h4>Giảm giá</h4>
-                <input type="text" name="MucGiamGia"  value="<?php if(!empty($data["field"]["MucGiamGia"])){echo $data["field"]["MucGiamGia"];}?>">
+                <input type="text" name="MucGiamGia"  value="<?php if(!empty($data["field"]["MucGiamGia"])){echo $data["field"]["MucGiamGia"];}else{echo $itemProduct[0]["MucGiamGia"];}?>">
                 <p class="err"><?php echo (!empty($errors) && array_key_exists("MucGiamGia",$errors))?$errors["MucGiamGia"]:false;?></p>
             </label>
             <label for="">
                 <h4>Hình ảnh</h4>
                 <input type="file" name="HinhAnh" id="">
-                <p class="err"><?php echo (!empty($errors) && array_key_exists("HinhAnh",$errors))?$errors["HinhAnh"]:false;?></p>
             </label>
             <label for="">
                 <h4>Loại hàng</h4>
@@ -35,7 +34,7 @@
                     <?php 
                         foreach($listLoai as $key=>$item){
                     ?>
-                        <option value="<?php echo $item["MaLoai"]?>" <?php if(isset($field["MaLoaiHang"]) && $field["MaLoaiHang"] == $item["MaLoai"]){echo "selected";}?>><?php echo $item["TenLoai"]?></option>
+                        <option value="<?php echo $item["MaLoai"]?>" <?php if(isset($field["MaLoaiHang"]) && $field["MaLoaiHang"] == $item["MaLoai"] || $itemProduct[0]["MaLoaiHang"] == $item["MaLoai"]){echo "selected";}?>><?php echo $item["TenLoai"]?></option>
                     <?php
                         }
                     ?>
@@ -46,17 +45,17 @@
                 <h4>Hàng?</h4>
                 <div class="border">
                     <label for="db">
-                        <input type="radio" name="DacBiet" value="2" <?php if(isset($field["DacBiet"]) && $field["DacBiet"] == 2){echo "checked";}?>> Đặc biệt
+                        <input type="radio" name="DacBiet" value="2" <?php if(isset($field["DacBiet"]) && $field["DacBiet"] == 2 || $itemProduct[0]["DacBiet"] == 2){echo "checked";}?>> Đặc biệt
                     </label>
                     <label for="bt">
-                        <input type="radio" name="DacBiet" value="1" <?php if(isset($field["DacBiet"]) && $field["DacBiet"] == 1){echo "checked";}?>> Bình thường
+                        <input type="radio" name="DacBiet" value="1" <?php if(isset($field["DacBiet"]) && $field["DacBiet"] == 1 || $itemProduct[0]["DacBiet"] == 1){echo "checked";}?>> Bình thường
                     </label>
                 </div>
                 <p class="err"><?php echo (!empty($errors) && array_key_exists("DacBiet",$errors))?$errors["DacBiet"]:false;?></p>
             </label>
             <label for="">
                 <h4>Ngày nhập</h4>
-                <input type="date" name="NgayNhap" value="<?php if(!empty($data["field"]["NgayNhap"])){echo $data["field"]["NgayNhap"];}?>">>
+                <input type="date" name="NgayNhap" value="<?php if(!empty($data["field"]["NgayNhap"])){echo $data["field"]["NgayNhap"];}else{echo $itemProduct[0]["NgayNhap"];}?>">
                 <p class="err"><?php echo (!empty($errors) && array_key_exists("NgayNhap",$errors))?$errors["NgayNhap"]:false;?></p>
             </label>
             <label for="">
@@ -66,11 +65,11 @@
         </div>
         <label for="">
             <h4>Mô tả</h4>
-            <textarea name="MoTa" id="" cols="103" rows="10"></textarea>
+            <textarea name="MoTa" id="" cols="103" rows="10" value="akaka"></textarea>
             <p class="err"><?php echo (!empty($errors) && array_key_exists("MoTa",$errors))?$errors["MoTa"]:false;?></p>
         </label>
         <div class="btn">
-            <input type="submit" name="btn" value="Thêm mới">
+            <input type="submit" name="btn" value="Sửa">
             <a href="?act=listProduct">Danh sách</a>
         </div>
     </form>

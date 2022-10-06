@@ -8,16 +8,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo _WEB_ROOT_?>/public/assets/client/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/5dd6f63e97.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 <body>
     <header>
         <div class="header-1">
             <a href="Trang-Chu">X-Shop</a>
-            <form action="" class="search">
-                <input type="search" name="" id="" placeholder="Tìm kiếm..." required>
+            <form action="SearchSP" class="search">
+                <input type="search" name="key" placeholder="Tìm kiếm..." required>
                 <button type="submit">
-                    <label for="search-box" class="fas fa-search"></label>
+                    <!-- <label for="search-box" class="fas fa-search"></label> -->
+                    Search
                 </button>
             </form>
         </div>
@@ -31,26 +33,49 @@
                 <li class="dropdown">
                     <a class="danhmuc" href="">Danh mục</a>
                     <ul class="list">
-                        <li><a href="">May tinh</a></li>
-                        <li><a href="">Dien thoai</a></li>
-                        <li><a href="">Dien thoai</a></li>
-                        <li><a href="">Dien thoai</a></li>
-                        <li><a href="">Balo</a></li>
-                        <li><a href="">Balo</a></li>
-                        <li><a href="">Dong ho</a></li>
-                        <li><a href="">Dong ho</a></li>
-                        <li><a href="">Dong ho</a></li>
+                        <?php 
+                            if(!empty($data["danhmuc"])){
+                                foreach($data["danhmuc"] as $item){
+                        ?>
+                                <li><a href="dmSP?Iddm=<?php echo $item["MaLoai"]?>"><?php echo $item["TenLoai"]?></a></li>
+                        <?php
+                                }
+                            }
+                        ?>
                     </ul>
                 </li>
                 <li class="move">
-                <a href="#" class="fas fa-shopping-cart"></a>
+                    <a href="#" class="fas fa-shopping-cart"></a>
                     <div class="dropaccount">
-                        <a href="#" class="fas fa-user-circle"></a>
+                        <?php ?>
+                        <i class="fas fa-user-circle"></i>
                         <ul class="account">
-                            <li><a href="Login">Đăng nhập</a></li>
-                            <li><a href="Register">Đăng kí</a></li>
+                            <?php 
+                                if(isset($_SESSION["Login"]["user"])){
+                            ?>
+                                <li><a href="Update">Cập nhật</a></li>
+                                <li>
+                                    <a href="LogOut"><i class="fa-solid fa-right-from-bracket"></i></a>
+                                </li>
+                            <?php
+                                }else{
+                            ?>
+                                <li><a href="Login">Đăng nhập</a></li>
+                                <li><a href="Register">Đăng kí</a></li>
+                            <?php
+                                }
+                            ?>
                         </ul>
                     </div>
+                    <!-- <div class="dropaccount">
+                        <i class="fas fa-solid fa-gear"></i>
+                        <ul class="account">
+                            <li><a href="Update">Cập nhật</a></li>
+                            <li>
+                                <a href="LogOut"><i class="fa-solid fa-right-from-bracket"></i></a>
+                            </li>
+                        </ul>
+                    </div> -->
                 </li>
             </ul>
         </nav>

@@ -1,49 +1,12 @@
 
 
-<!-- Slideshow container -->
-<div class="slideshow-container" id="#home">
-
-  <!-- Full-width images with number and caption text -->
-  <div class="mySlides fade">
-    <img src="<?php echo _WEB_ROOT_?>/public/assets/client/images/banner/Banner.jpg" style="width:100%">
-  </div>
-
-  <div class="mySlides fade">
-    <img src="<?php echo _WEB_ROOT_?>/public/assets/client/images/banner/Banner1.jpg" style="width:100%">
-  </div>
-
-  <div class="mySlides fade">
-    <img src="<?php echo _WEB_ROOT_?>/public/assets/client/images/banner/Banner2.png" style="width:100%">
-  </div>
-
-  <div class="mySlides fade">
-    <img src="<?php echo _WEB_ROOT_?>/public/assets/client/images/banner/Banner3.jpg" style="width:100%">
-  </div>
-
-  <div class="mySlides fade">
-    <img src="<?php echo _WEB_ROOT_?>/public/assets/client/images/banner/Banner4.jpg" style="width:100%">
-  </div>
-
-  <!-- Next and previous buttons -->
-  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-  <a class="next" onclick="plusSlides(1)">&#10095;</a>
-  <div style="text-align:center">
-    <span class="dot" onclick="currentSlide(1)"></span>
-    <span class="dot" onclick="currentSlide(2)"></span>
-    <span class="dot" onclick="currentSlide(3)"></span>
-    <span class="dot" onclick="currentSlide(4)"></span>
-    <span class="dot" onclick="currentSlide(5)"></span>
-  </div>
-</div>
-
 <div class="container">
-  <h1 class="heading">Các sản phẩm của <span>X-Shop</span></h1>
+  <h1 class="heading">Các sản phẩm <?php if(!empty($TenLoai[0]["TenLoai"])){echo $TenLoai[0]["TenLoai"];}?> của <span>X-Shop</span></h1>
   <section id="Iphone">
-    <!-- <h2>Iphone</h2> -->
     <div class="box-product">
       <?php 
-        if(!empty($data["listProduct"])){
-          foreach($data["listProduct"] as $item){
+        if(!empty($listProduct)){
+          foreach($listProduct as $item){
       ?>
         <div class="box-item">
           <span class="sale">-<?php echo $item["MucGiamGia"]?>%</span>
@@ -65,6 +28,10 @@
         </div>
       <?php
           }
+        }else{
+            if(isset($_GET["key"])){
+                echo "<h3>Không có sản phẩm nào có tên là ".$_GET["key"]."</h3>";
+            }
         }
       ?>
     </div>

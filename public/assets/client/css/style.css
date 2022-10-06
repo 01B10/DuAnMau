@@ -87,20 +87,31 @@ nav ul li {
   position: absolute;
   right: -2rem;
   width: 150px;
-  background-color: #ede734;
   display: none;
+  visibility: hidden;
+  background-color: #ede734;
   z-index: 10;
 }
 
 .account li {
-  text-align: center;
-  display: block;
-  padding: 10px;
-  cursor: pointer;
+  width: 100%;
+  padding: 0;
 }
 
-.account li:hover {
+.account li a {
+  text-align: center;
+  display: inline-block;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.account li a:hover {
   background-color: rgb(168, 168, 10);
+}
+
+.dropaccount i,
+.dropaccount + i {
+  cursor: pointer;
 }
 
 .dropaccount:hover > .account {
@@ -123,6 +134,8 @@ nav ul li a:not(.list li a, .move a):hover {
 }
 
 .dropdown .list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   position: absolute;
   background-color: #27ae60;
   top: 20px;
@@ -133,14 +146,18 @@ nav ul li a:not(.list li a, .move a):hover {
   display: none;
   visibility: hidden;
   width: 300px;
-  border-radius: 5px;
+  /* border-radius: 5px; */
 }
 
 .list li {
+  width: 100%;
+  padding: 0;
+}
+
+.list li a {
   display: inline-block;
-  cursor: pointer;
-  /* width: 100%; */
-  padding: 10px;
+  width: 100%;
+  padding: 10px 0;
 }
 
 /* .list li:first-child {
@@ -153,7 +170,7 @@ nav ul li a:not(.list li a, .move a):hover {
   border-bottom-left-radius: 5px;
 } */
 
-.list li:hover {
+.list a:hover {
   background-color: lightgreen;
 }
 
@@ -179,7 +196,7 @@ nav ul li a:not(.list li a, .move a):hover {
 }
 
 .dropdown:hover > .list {
-  display: block;
+  display: grid;
   visibility: visible;
 }
 
@@ -192,6 +209,7 @@ nav ul li a:not(.list li a, .move a):hover {
 .heading {
   text-align: center;
   color: #2c2c54;
+  margin-bottom: 30px;
 }
 
 .heading span {
@@ -388,6 +406,7 @@ nav ul li a:not(.list li a, .move a):hover {
 
 .box-item img {
   max-width: 14rem;
+  margin: 0 auto;
 }
 
 .box-item .img {
@@ -405,11 +424,14 @@ nav ul li a:not(.list li a, .move a):hover {
 .box-item .price {
   color: #333;
   margin: 10px 0;
+  font-weight: bold;
 }
 
 .box-item .price span {
   color: #999;
   text-decoration: line-through;
+  margin-left: 10px;
+  font-weight: 100;
 }
 
 .box-item .quantity {
@@ -443,7 +465,7 @@ nav ul li a:not(.list li a, .move a):hover {
 
 .sale {
   position: absolute;
-  background-color: lightseagreen;
+  background-color: rgba(0, 222, 255, 0.4);
   color: red;
   font-size: 1.2rem;
   padding: 10px 12px;
@@ -547,3 +569,110 @@ nav ul li a:not(.list li a, .move a):hover {
 .sendpass {
   margin-left: 10px;
 }
+
+.content {
+  margin: 20px auto;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.contentSP {
+  border: 2px solid grey;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.contentSP h3 {
+  background-color: #27ae60;
+  padding: 5px 10px;
+}
+
+.boxSP {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  /* justify-content: space-evenly; */
+}
+
+.boxSP img {
+  width: 250px;
+}
+
+.detail {
+  /* background-color: #ede734; */
+  max-width: 25rem;
+  margin: 0 auto;
+  padding: 10px;
+  border: 4px solid gray;
+  border-radius: 3.5px;
+}
+
+.detail h4 {
+  margin-bottom: 10px;
+}
+
+.cart {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #ede734;
+  padding: 10px;
+  font-weight: bold;
+  color: #000000;
+  border-radius: 5px;
+}
+
+/* .boxBL {
+  padding: 10px;
+}
+
+.boxBL textarea {
+  width: 100%;
+}
+
+.boxBL form .send {
+  background-color: lightseagreen;
+  cursor: pointer;
+  padding: 10px 20px;
+  border: 1px solid gray;
+  border-radius: 5px;
+} */
+
+.welcome {
+  text-align: center;
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem 0;
+}
+
+.welcome img {
+  width: 900px;
+}
+
+/* .comment {
+  display: flex;
+  gap: 10px;
+}
+
+.comment .avarta img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.noidung {
+  padding: 10px;
+}
+
+.contentComment {
+  background-color: #7e7878;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.contentComment .name {
+  font-weight: bold;
+  cursor: default;
+} */

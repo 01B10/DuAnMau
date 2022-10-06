@@ -1,24 +1,336 @@
 <?php 
     class admin extends controller{
-        public $model_home,$data;
+        public $admin_model,$data;
+
+        function __construct()
+        {
+            $this->admin_model = $this->model("adminModel");
+        }
+
         function index(){
             $this->data["content"] = "admin/TrangChu";
             $this->render("layout/admin_layout",$this->data);
         }
 
         function addLoai(){
-            $this->data["content"] = "admin/quanly/addLoai";
-            $this->render("layout/admin_layout",$this->data);
+            $act = ["danhsach","fixLoai","DelLoai"];
+            $request = new Request();
+
+            $this->data["field"] = $request->getFields();
+
+            $request->rules([
+                "TenLoai" => "required|min:4|max:30|unique:loai:TenLoai"
+            ]);
+
+            $request->message([
+                "TenLoai.required" => "Tên loại không được để trống",
+                "TenLoai.min" => "Tên loại phải lớn hơn 4 kí tự",
+                "TenLoai.max" => "Tên loại phải nhỏ hơn 30 kí tự",
+                "TenLoai.unique" => "Tên loại đã tồn tại"
+            ]);
+
+            if(!isset($_GET["act"])){
+                if(!empty($_POST["btn"])){
+                    $validate = $request->validate();
+                    if(!$validate){
+                        $this->data["errors"] = $request->errors();
+                    }else{
+                        $this->data["errors"] = "";
+                        unset($this->data["field"]["btn"]);
+                        $check = $this->db->table("loai")->insert($this->data["field"]);
+                        if($check){
+                            $this->data["field"] = "";
+                            echo "<script>alert('Thêm mới loại hàng thành công!')</script>";
+                        }
+                    }
+                }
+                $this->data["content"] = "admin/quanly/addLoai";
+                $this->render("layout/admin_layout",$this->data);
+            }else{
+                $boolean = false;
+                foreach($act as $item){
+                    if($_GET["act"] == $item){
+                        if($_GET["act"] == "fixLoai"){
+                            unset($this->data["field"]["act"]);
+                            unset($this->data["field"]["Maloai"]);
+                            $validate = $request->validate();
+                            if(!empty($this->data["field"]["btn"])){
+                                if(!$validate){
+                                    $this->data["errors"] = $request->errors();
+                                }else{
+                                    $this->data["errors"] = "";
+                                    unset($this->data["field"]["btn"]);
+                                    $check = $this->db->table("loai")->where("MaLoai","=","{$_GET["Maloai"]}")->update($this->data["field"]);
+                                    if($check){
+                                        header("Location: ?act=danhsach");
+                                    }
+                                }
+                            }
+                        }elseif($_GET["act"] == "DelLoai"){
+                            $this->db->table("hanghoa")->where("MaLoaiHang","=","{$_GET["Maloai"]}")->delete();
+                            $this->db->table("loai")->where("MaLoai","=","{$_GET["Maloai"]}")->delete();
+                            header("Location: ?act=danhsach");
+                        }
+                        $this->data["listLoai"] = $this->admin_model->listLoai();
+                        $this->data["tenloai"] = $this->admin_model->TenLoai();
+                        $this->data["content"] = "admin/quanly/$item";
+                        $this->render("layout/admin_layout",$this->data);
+                        $boolean = true;
+                        break;
+                    }
+                }
+                if($boolean == false){
+                    require_once "./app/error/404.php";
+                }
+            }
+        }
+
+        function khachhang(){
+            $act = ["listClient","fixClient","DelClient"];
+            $request = new Request();
+            $this->data["field"] = $request->getFields();
+
+            $request->message([
+                "HoTen.required" => "Họ Tên không được để trống",
+                "HoTen.min" => "Họ Tên phải trên 4 kí tự",
+                "MK.required" => "Mật khẩu không được để trống",
+                "MK.min" => "Mật khẩu phải trên 5 kí tự",
+                "rmk.required" => "Nhập lại mật khẩu không được để trống",
+                "rmk.min" => "Nhập lại mật khẩu phải trên 5 kí tự",
+                "rmk.match" => "Nhập lại mật khẩu không khớp",
+                "HinhAnh.checkfile" => "Hình ảnh không được để trống",
+                "Email.required" => "Email không được để trống",
+                "Email.min" => "Email phải trên 13 kí tự",
+                "Email.email" => "Định dạng Email không hợp lệ",
+                "KichHoat.required" => "Kích hoạt không được để trống",
+                "VaiTro.required" => "Vai trò không được để trống"
+            ]);
+            if(!isset($_GET["act"])){
+                $request->rules([
+                    "HoTen" => "required|min:4",
+                    "MK" => "required|min:5",
+                    "rmk" => "required|min:5|match:MK",
+                    "HinhAnh" => "checkfile",
+                    "Email" => "required|email|min:13",
+                    "KichHoat" => "required",
+                    "VaiTro" => "required",
+                ]);
+                if(!empty($_POST["btn"])){
+                            $validate = $request->validate();
+                            if(!$validate){
+                                $this->data["errors"] = $request->errors();
+                            }else{
+                                $this->data["errors"] = "";
+                                unset($this->data["field"]["btn"]);
+                                unset($this->data["field"]["rmk"]);
+                                $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
+                                $check = $this->db->table("khachhang")->insert($this->data["field"]);
+                                if($check){
+                                    $this->data["field"] = "";
+                                    echo "<script>alert('Thêm mới dữ liệu thành công!')</script>";
+                                }
+                            }
+                }
+                $this->data["content"] = "admin/quanly/khachhang";
+                $this->render("layout/admin_layout",$this->data);
+            }else{
+                $boolean = false;
+                $request->rules([
+                    "HoTen" => "required|min:4",
+                    "MK" => "required|min:5",
+                    "HinhAnh" => "checkfile",
+                    "Email" => "required|email|min:13",
+                    "KichHoat" => "required",
+                    "VaiTro" => "required",
+                ]);
+                foreach($act as $item){
+                    if($_GET["act"] == $item){
+                        if($_GET["act"] == "fixClient"){
+                            $this->data["listClient"] = $this->admin_model->ListData("khachhang");
+                            $this->data["itemClient"] = $this->admin_model->ItemData("khachhang","MaKH",$_GET["IdClient"]);
+                            if(!empty($_POST["btn"])){
+                                if(empty($_FILES["HinhAnh"]["name"])){
+                                    $this->data["field"]["HinhAnh"] = $this->data["itemClient"][0]["HinhAnh"];
+                                }else{
+                                    $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
+                                }
+                                $validate = $request->validate();
+
+                                var_dump($validate);
+    
+                                if(!$validate){
+                                    $this->data["errors"] = $request->errors();
+                                    print_r($this->data["errors"]);
+                                }else{
+                                    unset($this->data["field"]["btn"]);
+                                    unset($this->data["field"]["rmk"]);
+                                    unset($this->data["field"]["act"]);
+                                    unset($this->data["field"]["IdClient"]);
+                                    $this->data["errors"] = "";
+                                    
+                                    $check = $this->db->table("khachhang")->where("MaKH","=",$_GET["IdClient"])->update($this->data["field"]);
+                                    if($check){
+                                        $this->data["field"] = "";
+                                        move_uploaded_file($_FILES["HinhAnh"]["tmp_name"],_DIR_ROOT_."\public\assets\client\images\avatar"."\\".$_FILES["HinhAnh"]["name"]);
+                                        header("Location: ?act=listClient");
+                                    }
+                                }
+                            }
+                        }elseif($_GET["act"] == "DelClient"){
+                            echo "Hello";
+                            $this->db->table("khachhang")->where("MaKH","=","{$_GET["IdClient"]}")->delete();
+                            header("Location: ?act=listClient");
+                        }
+                        $this->data["listClient"] = $this->admin_model->ListData("khachhang");
+                        $this->data["content"] = "admin/quanly/$item";
+                        $this->render("layout/admin_layout",$this->data);
+                        $boolean = true;
+                        break;
+                    }
+                }
+                if($boolean == false){
+                    require_once "./app/error/404.php";
+                }
+            }
         }
 
         function addproduct(){
-            $this->data["content"] = "admin/quanly/addproduct";
-            $this->render("layout/admin_layout",$this->data);
+            $act = ["listProduct","fixProduct","DelProduct"];
+
+            $request = new Request();
+
+            $this->data["field"] = $request->getFields();
+            $this->data["listLoai"] = $this->db->table("loai")->get();
+
+            $request->message([
+                "TenHangHoa.required" => "Tên hàng hóa không được để trống",
+                "TenHangHoa.min" => "Tên hàng hóa phải lớn hơn 5 kí tự",
+                "TenHangHoa.max" => "Tên hàng hóa phải nhỏ hơn 30 kí tự",
+                "DonGia.required" => "Đơn giá không được để trống",
+                "DonGia.min" => "Đơn giá phải trên 3 số",
+                "MucGiamGia.required" => "Mức giảm giá không được để trống",
+                "HinhAnh.checkfile" => "Hình ảnh không được để trống",
+                "MaLoaiHang.required" => "Mã loại hàng không được để trống",
+                "DacBiet.required" => "Hàng đặc biệt không được để trống",
+                "NgayNhap.required" => "Ngày nhập không được để trống",
+                "MoTa.required" => "Mô tả không được để trống",
+                "MoTa.min" => "Mô tả phải lớn hơn 5 kí tự",
+            ]);
+            if(!isset($_GET["act"])){
+                $request->rules([
+                    "TenHangHoa" => "required|min:5|max:30",
+                    "DonGia" => "required|min:3",
+                    "HinhAnh" => "checkfile",
+                    "MaLoaiHang" => "required",
+                    "DacBiet" => "required",
+                    "MucGiamGia" => "required",
+                    "NgayNhap" => "required",
+                    "MoTa" => "required|min:5",
+                ]);
+                if(isset($_POST["btn"])){
+                    $validate = $request->validate();
+                    if(!$validate){
+                        $this->data["errors"] = $request->errors();
+                    }else{
+                        $this->data["errors"] = "";
+                        unset($this->data["field"]["btn"]);
+                        $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
+                        $check = $this->db->table("hanghoa")->insert($this->data["field"]);
+                        if($check){
+                            $this->data["field"] = "";
+                            move_uploaded_file($_FILES["HinhAnh"]["tmp_name"],_DIR_ROOT_."\public\assets\client\images\products"."\\".$_FILES["HinhAnh"]["name"]);
+                            echo "<script>alert('Thêm mới loại hàng thành công!')</script>";
+                        }
+                    }
+                }
+                $this->data["content"] = "admin/quanly/addProduct";
+                $this->render("layout/admin_layout",$this->data);
+            }else{
+                $boolean = false;
+                
+                $request->rules([
+                    "TenHangHoa" => "required|min:5|max:30",
+                    "DonGia" => "required|min:3",
+                    "MaLoaiHang" => "required",
+                    "DacBiet" => "required",
+                    "MucGiamGia" => "required",
+                    "NgayNhap" => "required",
+                    "MoTa" => "required|min:5",
+                ]);
+                foreach($act as $item){
+                    if($_GET["act"] == $item){
+                        
+                        $this->data["listProduct"] = $this->admin_model->ListData("hanghoa");
+                       
+                        if($_GET["act"] == "fixProduct"){
+                            // print_r($_FILES["HinhAnh"]);
+                            // echo "Hello";
+                            $this->data["itemProduct"] = $this->admin_model->ItemData("hanghoa","MaHangHoa",$_GET["IdProduct"]);
+                            if(isset($_POST["btn"])){
+                                if(empty($_FILES["HinhAnh"]["name"])){
+                                    $this->data["field"]["HinhAnh"] = $this->data["itemProduct"][0]["HinhAnh"];
+                                }else{
+                                    $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
+                                }
+
+                                // print_r($this->data["field"]);
+                                $validate = $request->validate();
+                                if(!$validate){
+                                    $this->data["errors"] = $request->errors();
+                                    print_r($this->data["errors"]);
+                                }else{
+                                    echo "Hello";
+                                    $this->data["errors"] = "";
+                                    unset($this->data["field"]["btn"]);
+                                    unset($this->data["field"]["act"]);
+                                    unset($this->data["field"]["IdProduct"]);
+                                    $check = $this->db->table("hanghoa")->where("MaHangHoa","=","{$_GET["IdProduct"]}")->update($this->data["field"]);
+                                    if($check){
+                                        $this->data["field"] = "";
+                                        move_uploaded_file($_FILES["HinhAnh"]["tmp_name"],_DIR_ROOT_."\public\assets\client\images\products"."\\".$_FILES["HinhAnh"]["name"]);
+                                        header("Location: ?act=listProduct");
+                                    }
+                                }
+                                // var_dump($validate);
+                            }
+                        }elseif($_GET["act"] == "DelProduct"){
+                            $this->db->table("hanghoa")->where("MaHangHoa","=","{$_GET["IdProduct"]}")->delete();
+                            header("Location: ?act=listProduct");
+                        }
+
+                        $this->data["content"] = "admin/quanly/$item";
+                        $this->render("layout/admin_layout",$this->data);
+                        $boolean = true;
+                        break;
+                    }
+                }
+                if($boolean == false){
+                    require_once "./app/error/404.php";
+                }
+            }
         }
 
         function binhluan(){
-            $this->data["content"] = "admin/quanly/binhluan";
-            $this->render("layout/admin_layout",$this->data);
+            $act = ["binhluan","fixProduct"];
+            if(!isset($_GET["act"])){
+                $this->data["content"] = "admin/quanly/binhluan";
+                $this->render("layout/admin_layout",$this->data);
+            }else{
+                $boolean = false;
+                foreach($act as $item){
+                    if($_GET["act"] == $item){
+                        $this->data["content"] = "admin/quanly/$item";
+                        $this->render("layout/admin_layout",$this->data);
+                        $boolean = true;
+                        break;
+                    }
+                }
+                if($boolean == false){
+                    require_once "./app/error/404.php";
+                }
+            }
+            // $this->data["content"] = "admin/quanly/binhluan";
+            // $this->render("layout/admin_layout",$this->data);
         }
 
         function thongke(){

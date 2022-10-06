@@ -3,6 +3,6 @@
     if(isset($err)){
         echo $err;
     }else{
-        echo "Loi Page";
+        echo "Lỗi Page";
     }
 ?></h2>
