@@ -62,7 +62,7 @@
                 }
             }
         }
-            $this->data["content"] = "user/register";
+            $this->data["content"] = "user/taikhoan/register";
             $this->render("layout/client_layout",$this->data);
         }
 
@@ -106,7 +106,7 @@
                 
             }
             }
-            $this->data["content"] = "user/login";
+            $this->data["content"] = "user/taikhoan/login";
             $this->render("layout/client_layout",$this->data);
         }
 
@@ -157,7 +157,7 @@
                 }
             }
 
-            $this->data["content"] = "user/forgotpassword";
+            $this->data["content"] = "user/taikhoan/forgotpassword";
             $this->render("layout/client_layout",$this->data);
         }
 
@@ -189,7 +189,7 @@
             }elseif(isset($_GET["key"])){
                 $this->data["listProduct"] = $this->model_home->searchSP($_GET["key"]);
             }
-            $this->data["content"] = "user/danhmuc";
+            $this->data["content"] = "user/detailProduct/danhmuc";
             $this->render("layout/client_layout",$this->data);
         }
 
