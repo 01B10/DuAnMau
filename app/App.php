@@ -3,7 +3,6 @@
         private $__controller,$__action,$__params,$__routes,$__db;
 
         static $app;
-        public $test;
 
         function __construct()
         {

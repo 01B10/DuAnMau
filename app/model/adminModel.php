@@ -16,30 +16,47 @@
             return $this->all();
         }
 
-        function ListData($table){
-            return $this->db->table($table)->get();
+        function ListData($table,$select="*"){
+            return $this->db->table($table)->select($select)->get();
         }
 
-        function ItemProduct(){
-            if(!empty($_GET["IdProduct"])){
-                return $this->db->table("hoanghoa")->where("MaHangHoa","=",$_GET["IdProduct"])->first();
-            };
-        }
 
-        function ItemData($table,$field,$value){
-            if(!empty($value)){
-                return $this->db->table($table)->where($field,"=",$value)->first();
-            };
-        }
-
-        function TenLoai(){
-            if(!empty($_GET["Maloai"])){
-                return $this->db->table("loai")->select("TenLoai")->where("MaLoai","=",$_GET["Maloai"])->get();
+        function ItemData($table,$select,$field,$value){
+                return $this->db->table($table)->select($select)->where($field,"=",$value)->get();
             }
-        }
-
+        
         function getListTenLoai($maloai){
             return $this->db->table("loai")->select("TenLoai")->where("MaLoai","=",$maloai)->get();
+        }
+
+
+        function insertData($table, $data)
+        {
+            return $this->db->table($table)->insert($data);
+        }
+
+        function deleteField($table, $field,$compare,$value)
+        {
+            return $this->db->table($table)->where($field,$compare,$value);
+        }
+
+        function updateField($table, $field,$compare,$value,$data){
+            return $this->db->table($table)->where($field,$compare,$value)->update($data);
+        }
+
+        function TongHopBL(){
+            return $this->db->table("hanghoa")->select("hanghoa.MaHangHoa as MaSP,hanghoa.TenHangHoa,COUNT(binhluan.MaBL) as SoBL,MIN(binhluan.ThoiGianGui) as MIN,MAX(binhluan.ThoiGianGui) as MAX")
+            ->join("INNER","binhluan","binhluan.MaSP = hanghoa.MaHangHoa")->groupBy("hanghoa.MaHangHoa")->get();
+        }
+
+        function ChiTietBL(){
+            return $this->db->table("binhluan")->select("binhluan.NoiDung,binhluan.ThoiGianGui,khachhang.HoTen")
+            ->join("INNER","khachhang","binhluan.MaKH = khachhang.MaKH")->where("binhluan.MaSP","=",$_GET["IdProduct"])->get();
+        }
+
+        function ThongKeHH(){
+            return $this->db->table("hanghoa")->select("loai.MaLoai,loai.TenLoai, COUNT(hanghoa.MaHangHoa) as SL,MIN(hanghoa.DonGia) as MIN,MAX(hanghoa.DonGia) as MAX,AVG(hanghoa.DonGia) as AVG")
+            ->join("LEFT","loai","hanghoa.MaLoaiHang = loai.MaLoai")->groupBy("loai.MaLoai")->orderBy("loai.MaLoai","DESC")->get();
         }
     }
 ?>

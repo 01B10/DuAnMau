@@ -1,7 +1,8 @@
 <?php 
     trait QueryBuilder{
         public $tableName = "",$where = "",$operator = "", 
-        $selectField = "*",$innerJoin= "",$orderBy="";
+        $selectField = "*",$innerJoin= "",$orderBy="", $groupBy = "",
+        $limit = "";
 
         public function table($tableName){
             $this->tableName = $tableName;
@@ -38,8 +39,8 @@
             return $this;
         }
 
-        public function join($tableName,$relationship){
-            $this->innerJoin .= 'INNER JOIN '.$tableName.' ON '.$relationship.' ';
+        public function join($type,$tableName,$relationship){
+            $this->innerJoin .= $type.' JOIN '.$tableName.' ON '.$relationship.' ';
             return $this;
         }
 
@@ -81,8 +82,21 @@
             return $this;
         }
 
+        public function limit($start,$end){
+            $this->limit = "LIMIT $start,$end";
+            return $this;
+        }
+
+        public function groupBy($field){
+            if(!empty($field)){
+                $this->groupBy = " GROUP BY $field";
+            }
+            return $this;
+        }
+
         public function get(){
-            $sqlQuery = "SELECT $this->selectField FROM $this->tableName $this->innerJoin $this->where $this->orderBy";
+            $sqlQuery = "SELECT $this->selectField FROM $this->tableName $this->innerJoin $this->where 
+            $this->groupBy $this->orderBy $this->limit";
             $sqlQuery = trim($sqlQuery);
             $sql = $this->query($sqlQuery);
 
@@ -111,6 +125,10 @@
             $this->tableName = "";
             $this->where = "";
             $this->operator = ""; 
+            $this->orderBy = ""; 
+            $this->innerJoin = ""; 
+            $this->groupBy = "";
+            $this->limit = "";
             $this->selectField = "*";
         }
     }

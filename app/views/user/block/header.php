@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +17,6 @@
             <form action="SearchSP" class="search">
                 <input type="search" name="key" placeholder="Tìm kiếm..." required>
                 <button type="submit">
-                    <!-- <label for="search-box" class="fas fa-search"></label> -->
                     Search
                 </button>
             </form>
@@ -67,15 +65,25 @@
                             ?>
                         </ul>
                     </div>
-                    <!-- <div class="dropaccount">
-                        <i class="fas fa-solid fa-gear"></i>
-                        <ul class="account">
-                            <li><a href="Update">Cập nhật</a></li>
-                            <li>
-                                <a href="LogOut"><i class="fa-solid fa-right-from-bracket"></i></a>
-                            </li>
-                        </ul>
-                    </div> -->
+                </li>
+                <li class="dropdown SPLove">
+                    <a href="#">SP yêu thích</a>
+                    <ul class="list SP">
+                        <?php 
+                            if(!empty($data["SPLove"])){
+                                foreach($data["SPLove"] as $item){
+                        ?>
+                                <li>
+                                    <a href="SanPham?IdProduct=<?php echo $item["MaHangHoa"]?>">
+                                        <img src="<?php echo _WEB_ROOT_."/public/assets/client/images/products/".$item["HinhAnh"]?>" alt="">
+                                    </a>
+                                    <a href="SanPham?IdProduct=<?php echo $item["MaHangHoa"]?>"><?php echo $item["TenHangHoa"]?></a>
+                                </li>
+                        <?php
+                                }
+                            }
+                        ?>
+                    </ul>
                 </li>
             </ul>
         </nav>

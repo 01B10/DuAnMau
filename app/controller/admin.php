@@ -44,7 +44,7 @@
                         }
                     }
                 }
-                $this->data["content"] = "admin/quanly/addLoai";
+                $this->data["content"] = "admin/quanly/loaihang/addLoai";
                 $this->render("layout/admin_layout",$this->data);
             }else{
                 $boolean = false;
@@ -54,6 +54,7 @@
                             unset($this->data["field"]["act"]);
                             unset($this->data["field"]["Maloai"]);
                             $validate = $request->validate();
+                            $this->data["tenloai"] = $this->admin_model->ItemData("loai","TenLoai","MaLoai",$_GET["Maloai"]);
                             if(!empty($this->data["field"]["btn"])){
                                 if(!$validate){
                                     $this->data["errors"] = $request->errors();
@@ -72,8 +73,7 @@
                             header("Location: ?act=danhsach");
                         }
                         $this->data["listLoai"] = $this->admin_model->listLoai();
-                        $this->data["tenloai"] = $this->admin_model->TenLoai();
-                        $this->data["content"] = "admin/quanly/$item";
+                        $this->data["content"] = "admin/quanly/loaihang/$item";
                         $this->render("layout/admin_layout",$this->data);
                         $boolean = true;
                         break;
@@ -131,7 +131,7 @@
                                 }
                             }
                 }
-                $this->data["content"] = "admin/quanly/khachhang";
+                $this->data["content"] = "admin/quanly/khachhang/khachhang";
                 $this->render("layout/admin_layout",$this->data);
             }else{
                 $boolean = false;
@@ -143,11 +143,13 @@
                     "KichHoat" => "required",
                     "VaiTro" => "required",
                 ]);
+
+                
                 foreach($act as $item){
                     if($_GET["act"] == $item){
                         if($_GET["act"] == "fixClient"){
                             $this->data["listClient"] = $this->admin_model->ListData("khachhang");
-                            $this->data["itemClient"] = $this->admin_model->ItemData("khachhang","MaKH",$_GET["IdClient"]);
+                            $this->data["itemClient"] = $this->admin_model->ItemData("khachhang","*","MaKH",$_GET["IdClient"]);
                             if(!empty($_POST["btn"])){
                                 if(empty($_FILES["HinhAnh"]["name"])){
                                     $this->data["field"]["HinhAnh"] = $this->data["itemClient"][0]["HinhAnh"];
@@ -182,7 +184,7 @@
                             header("Location: ?act=listClient");
                         }
                         $this->data["listClient"] = $this->admin_model->ListData("khachhang");
-                        $this->data["content"] = "admin/quanly/$item";
+                        $this->data["content"] = "admin/quanly/khachhang/$item";
                         $this->render("layout/admin_layout",$this->data);
                         $boolean = true;
                         break;
@@ -243,7 +245,7 @@
                         }
                     }
                 }
-                $this->data["content"] = "admin/quanly/addProduct";
+                $this->data["content"] = "admin/quanly/hanghoa/addProduct";
                 $this->render("layout/admin_layout",$this->data);
             }else{
                 $boolean = false;
@@ -263,9 +265,7 @@
                         $this->data["listProduct"] = $this->admin_model->ListData("hanghoa");
                        
                         if($_GET["act"] == "fixProduct"){
-                            // print_r($_FILES["HinhAnh"]);
-                            // echo "Hello";
-                            $this->data["itemProduct"] = $this->admin_model->ItemData("hanghoa","MaHangHoa",$_GET["IdProduct"]);
+                            $this->data["itemProduct"] = $this->admin_model->ItemData("hanghoa","*","MaHangHoa",$_GET["IdProduct"]);
                             if(isset($_POST["btn"])){
                                 if(empty($_FILES["HinhAnh"]["name"])){
                                     $this->data["field"]["HinhAnh"] = $this->data["itemProduct"][0]["HinhAnh"];
@@ -273,7 +273,6 @@
                                     $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
                                 }
 
-                                // print_r($this->data["field"]);
                                 $validate = $request->validate();
                                 if(!$validate){
                                     $this->data["errors"] = $request->errors();
@@ -291,14 +290,13 @@
                                         header("Location: ?act=listProduct");
                                     }
                                 }
-                                // var_dump($validate);
                             }
                         }elseif($_GET["act"] == "DelProduct"){
                             $this->db->table("hanghoa")->where("MaHangHoa","=","{$_GET["IdProduct"]}")->delete();
                             header("Location: ?act=listProduct");
                         }
 
-                        $this->data["content"] = "admin/quanly/$item";
+                        $this->data["content"] = "admin/quanly/hanghoa/$item";
                         $this->render("layout/admin_layout",$this->data);
                         $boolean = true;
                         break;
@@ -311,31 +309,42 @@
         }
 
         function binhluan(){
-            $act = ["binhluan","fixProduct"];
             if(!isset($_GET["act"])){
-                $this->data["content"] = "admin/quanly/binhluan";
+                $this->data["listBL"] = $this->admin_model->TongHopBL();
+                $this->data["content"] = "admin/quanly/binhluan/binhluan";
                 $this->render("layout/admin_layout",$this->data);
             }else{
                 $boolean = false;
-                foreach($act as $item){
-                    if($_GET["act"] == $item){
-                        $this->data["content"] = "admin/quanly/$item";
-                        $this->render("layout/admin_layout",$this->data);
-                        $boolean = true;
-                        break;
-                    }
+                if($_GET["act"] == "binhluanct"){
+                    $this->data["listBL"] = $this->admin_model->ChiTietBL();
+                    $this->data["content"] = "admin/quanly/binhluan/binhluanct";
+                    $this->render("layout/admin_layout",$this->data);
+                    $boolean = true;
+                }elseif($_GET["act"] == "xoabinhluan"){
+                    $this->db->table("binhluan")->where("MaBL","=",$_GET["IdBL"])->delete();
+                    $id = $_GET["IdProduct"];
+                    header("Location: binhluan");
                 }
                 if($boolean == false){
                     require_once "./app/error/404.php";
                 }
             }
-            // $this->data["content"] = "admin/quanly/binhluan";
-            // $this->render("layout/admin_layout",$this->data);
         }
 
         function thongke(){
-            $this->data["content"] = "admin/quanly/thongke";
-            $this->render("layout/admin_layout",$this->data);
+            $this->data["thongke"] = $this->admin_model->ThongKeHH();
+           if(!isset($_GET["act"])){
+                $this->data["content"] = "admin/quanly/thongke/thongke";
+                $this->render("layout/admin_layout",$this->data);
+           }elseif($_GET["act"] == "bieudo"){
+                $this->data["chart"] = "";
+                foreach($this->data["thongke"] as $item){
+                    $this->data["chart"] .= "['".$item["TenLoai"]."', ".$item["SL"]."]".",";
+                }
+                $this->data["chart"] = trim($this->data["chart"],",");
+                $this->data["content"] = "admin/quanly/thongke/bieudo";
+                $this->render("layout/admin_layout",$this->data);
+           }
         }
     }
 ?>

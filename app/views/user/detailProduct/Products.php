@@ -1,5 +1,4 @@
 
-
 <div class="content">
     <div class="contentSP">
         <h3>Chi tiết sản phẩm</h3>
@@ -19,23 +18,20 @@
     </div>
     <div class="contentSP">
         <h3>Bình luận</h3>
-        <iframe src="formcomment?IdProduct=<?php echo $_GET["IdProduct"];?>" frameborder="0" width="100%" height="300px"></iframe>
-        <!-- <div class="noidung">
-            <div class="comment">
-                <div class="avarta">
-                    <img src="<?php echo _WEB_ROOT_?>/public/assets/client/images/avatar/Banner.jpg" alt="">
-                </div>
-                <div class="boxComment">
-                    <div class="contentComment">
-                        <p class="name">B1001</p>
-                        <p class="para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quas, non id dicta, porro perferendis eaque quod voluptates blanditiis totam, voluptatibus officiis tenetur nesciunt eligendi. Omnis modi natus autem doloribus.</p>
-                    </div>
-                    <small>Time</small>
-                </div>
-            </div>
-        </div> -->
+        <iframe src="formcomment?IdProduct=<?php echo $_GET["IdProduct"];?>" frameborder="0" width="100%" height="400px"></iframe>
     </div>
     <div class="contentSP">
         <h3>Sản phẩm cùng loại</h3>
+        <div class="SPCL">
+            <ul>
+                <?php 
+                    foreach($SPCL as $item){
+                ?>
+                    <li><a href="SanPham?IdProduct=<?php echo $item["MaHangHoa"]?>"><?php echo $item["TenHangHoa"]?></a></li>
+                <?php
+                    }
+                ?>
+            </ul>
+        </div>
     </div>
 </div>

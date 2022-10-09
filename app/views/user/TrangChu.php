@@ -55,7 +55,7 @@
           <img src="<?php echo _WEB_ROOT_."/public/assets/client/images/products/".$item["HinhAnh"]?>" alt="">
           <div class="infor">
             <h3><?php echo $item["TenHangHoa"]?></h3>
-            <div class="price"><?php echo $item["DonGia"]?>$<span><?php echo $item["DonGia"]?>$</span></div>
+            <div class="price"><?php echo $item["DonGia"]-($item["DonGia"]*($item["MucGiamGia"]/100))?>$<span><?php echo $item["DonGia"]?>$</span></div>
             <div class="quantity">
                 <span>quantity: </span>
                 <input type="number" min="1" max="1000" value="1">

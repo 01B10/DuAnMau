@@ -149,6 +149,30 @@ nav ul li a:not(.list li a, .move a):hover {
   /* border-radius: 5px; */
 }
 
+.SPLove .list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  display: none;
+  visibility: hidden;
+  gap: 10px;
+  width: 810px;
+}
+
+.SPLove .list li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 5px;
+}
+
+.SPLove .list li:hover {
+  background-color: lightgreen;
+}
+
+.SPLove .list li img {
+  width: 60px;
+}
+
 .list li {
   width: 100%;
   padding: 0;
@@ -170,11 +194,11 @@ nav ul li a:not(.list li a, .move a):hover {
   border-bottom-left-radius: 5px;
 } */
 
-.list a:hover {
+.dropdown .list li a:not(.SPLove .list li a):hover {
   background-color: lightgreen;
 }
 
-.list::after {
+.list:not(.SPLove .list):after {
   content: "";
   position: absolute;
   top: -6px;
@@ -193,6 +217,13 @@ nav ul li a:not(.list li a, .move a):hover {
   top: -6px;
   height: 10px;
   background-color: transparent;
+}
+
+.SP::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
 }
 
 .dropdown:hover > .list {
@@ -623,21 +654,19 @@ nav ul li a:not(.list li a, .move a):hover {
   border-radius: 5px;
 }
 
-/* .boxBL {
-  padding: 10px;
+.SPCL ul {
+  padding: 2rem;
 }
 
-.boxBL textarea {
-  width: 100%;
+.SPCL ul li a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #000000;
 }
 
-.boxBL form .send {
-  background-color: lightseagreen;
-  cursor: pointer;
-  padding: 10px 20px;
-  border: 1px solid gray;
-  border-radius: 5px;
-} */
+.SPCL ul li a:hover {
+  text-decoration: underline;
+}
 
 .welcome {
   text-align: center;
@@ -649,30 +678,3 @@ nav ul li a:not(.list li a, .move a):hover {
 .welcome img {
   width: 900px;
 }
-
-/* .comment {
-  display: flex;
-  gap: 10px;
-}
-
-.comment .avarta img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.noidung {
-  padding: 10px;
-}
-
-.contentComment {
-  background-color: #7e7878;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.contentComment .name {
-  font-weight: bold;
-  cursor: default;
-} */

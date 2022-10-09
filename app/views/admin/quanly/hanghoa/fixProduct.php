@@ -65,7 +65,7 @@
         </div>
         <label for="">
             <h4>Mô tả</h4>
-            <textarea name="MoTa" id="" cols="103" rows="10" value="akaka"></textarea>
+            <textarea name="MoTa" id="" cols="103" rows="10" value="akaka"><?php echo $itemProduct[0]["MoTa"]?></textarea>
             <p class="err"><?php echo (!empty($errors) && array_key_exists("MoTa",$errors))?$errors["MoTa"]:false;?></p>
         </label>
         <div class="btn">

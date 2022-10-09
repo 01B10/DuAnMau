@@ -7,6 +7,7 @@
             session_start();
             $this->model_home = $this->model("clientModel");
             $this->data["danhmuc"] = $this->model_home->listData("loai","*");
+            $this->data["SPLove"] = $this->model_home->Top10("hanghoa","SoLuotXem","SoLuotXem","DESC",0,10);
         }
         
         function index(){
@@ -163,6 +164,13 @@
         function Products(){
             if(!empty($_GET["IdProduct"])){
                 $this->data["detailProduct"] = $this->model_home->detailData("hanghoa","*","MaHangHoa",$_GET["IdProduct"]);
+                $this->data["SPCL"] = $this->model_home->detailData("hanghoa","*","MaLoaiHang",$this->data["detailProduct"][0]["MaLoaiHang"]);
+                for($i = 0; $i < count($this->data["SPCL"]); $i++){
+                    if($this->data["SPCL"][$i]["MaHangHoa"] == $_GET["IdProduct"]){
+                        unset($this->data["SPCL"][$i]);
+                        break;
+                    };
+                }
                 $view = $this->model_home->detailData("hanghoa","SoLuotXem","MaHangHoa",$_GET["IdProduct"]);
                 $views = [
                     "SoLuotXem" => $view[0]["SoLuotXem"] + 1
@@ -170,7 +178,6 @@
                 $this->model_home->updateView($views,$_GET["IdProduct"]);
                 $this->data["db"] = "";
             }
-            // $this->formComment();
             $this->data["content"] = "user/detailProduct/Products";
             $this->render("layout/client_layout",$this->data);
         }
@@ -210,7 +217,7 @@
                     echo "<script>alert('Bạn cần đăng nhập để bình luận')</script>";
                 }
             }
-            $this->data["listBL"] = $this->model_home->listJoin("binhluan","MaSP",$_GET["IdProduct"],"*","khachhang","binhluan.MaKH = khachhang.MaKH","MaBL","DESC");
+            $this->data["listBL"] = $this->model_home->listJoin("binhluan","MaSP",$_GET["IdProduct"],"*","khachhang","binhluan.MaKH = khachhang.MaKH","MaBL","INNER","DESC");
             $this->render("layout/client_layout",$this->data);
         }
     }

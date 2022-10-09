@@ -138,6 +138,11 @@ header {
   max-width: 100px;
 }
 
+.listloaihang table thead th:not(.listloaihang table thead th:first-child) {
+  background-color: lightslategray;
+  border: 1px solid transparent;
+}
+
 td,
 th {
   padding: 10px;
@@ -267,4 +272,8 @@ th {
 
 .headerAD:hover {
   color: lightseagreen;
+}
+
+#piechart {
+  margin: 0 auto;
 }

@@ -28,7 +28,7 @@
                             <td><?php echo $item["HoTen"]?></td>
                             <td><?php echo $item["MK"]?></td>
                             <td><?php echo $item["Email"]?></td>
-                            <td><?php echo $item["HinhAnh"]?></td>
+                            <td><img src="<?php echo _WEB_ROOT_."/public/assets/client/images/avatar/".$item['HinhAnh'];?>"></td>
                             <td><?php if($item["VaiTro"] == 1){echo "khách hàng";}else{echo "Nhân viên";}?></td>
                             <td><a href="?act=fixClient&IdClient=<?php echo $item["MaKH"]?>" class="sua">Sửa</a></td>
                             <td><a href="?act=DelClient&IdClient=<?php echo $item["MaKH"]?>" class="xoa">Xóa</a></td>
