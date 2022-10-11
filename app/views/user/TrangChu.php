@@ -53,14 +53,16 @@
             <a href="SanPham?IdProduct=<?php echo $item["MaHangHoa"]?>" class="fas fa-eye"></a>
           </div>
           <img src="<?php echo _WEB_ROOT_."/public/assets/client/images/products/".$item["HinhAnh"]?>" alt="">
-          <div class="infor">
+          <div class="inforSP">
             <h3><?php echo $item["TenHangHoa"]?></h3>
             <div class="price"><?php echo $item["DonGia"]-($item["DonGia"]*($item["MucGiamGia"]/100))?>$<span><?php echo $item["DonGia"]?>$</span></div>
             <div class="quantity">
-                <span>quantity: </span>
-                <input type="number" min="1" max="1000" value="1">
+                <form action="addToCart?IdProduct=<?php echo $item["MaHangHoa"]?>" method="POST">
+                  <span>quantity: </span>
+                  <input type="number" class="soluong" name="SoLuong" min="1" max="1000" value="1">
+                  <input type="submit" class="btn" name="btn" value="Thêm vào giỏ hàng">
+                </form>
             </div>
-            <a href="#" class="btn">Thêm vào giỏ hàng</a>
           </div>
         </div>
       <?php
@@ -105,3 +107,16 @@
 <!-- <br> -->
 
 <!-- The dots/circles -->
+<!-- <script>
+  var addToCart = document.querySelectorAll(".addtocart");
+  var form = document.querySelector(".quantity form");
+  addToCart.forEach((e)=>{
+    e.addEventListener("click",(item)=>{
+      item.preventDefault();
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST","addToCart");
+      let formData = new FormData(form);
+      xhr.send(formData);
+    })
+  })
+</script> -->

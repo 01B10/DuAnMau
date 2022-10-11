@@ -56,7 +56,6 @@
 
         public function rules($rule=[]){
             $this->__rules = $rule;
-            // return $this->__rules;
         }
 
         public function message($message = []){

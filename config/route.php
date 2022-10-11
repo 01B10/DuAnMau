@@ -3,14 +3,20 @@
     $routes["Trang-Chu"] = "home";
     $routes["Register"] = "home/Register";
     $routes["Login"] = "home/Login";
+    $routes["CapNhat"] = "home/capnhattk";
     $routes["LogOut"] = "home/LogOut";
     $routes["SanPham"] = "home/Products";
-    $routes["SearchSP"] = "home/danhmuc";
-    $routes["dmSP"] = "home/danhmuc";
+    $routes["SearchSP"] = "home/listdm";
+    $routes["dmSP"] = "home/listdm";
     $routes["formcomment"] = "home/formComment";
     $routes["Welcome"] = "home/Welcome";
+    $routes["addToCart"] = "home/addToCart";
+    $routes["GioHang"] = "home/GioHang";
     $routes["ForgotPassword"] = "home/ForgotPassword";
-    $routes["admin/TrangChu"] = "admin";
-    $routes["admin/danhmuc"] = "admin/addLoai";
-    $routes["admin/hanghoa"] = "admin/addproduct";
+    $routes["TrangChu"] = "admin";
+    $routes["danhmuc"] = "admin/addLoai";
+    $routes["hanghoa"] = "admin/addproduct";
+    $routes["khachhang"] = "admin/khachhang";
+    $routes["binhluan"] = "admin/binhluan";
+    $routes["thongke"] = "admin/thongke";
 ?>

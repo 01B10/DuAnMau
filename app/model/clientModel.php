@@ -33,6 +33,10 @@
             return $this->db->table("hanghoa")->where("MaHangHoa","=",$Id)->update($data);
         }
 
+        function updateSL($data,$Id,$Id1){
+            return $this->db->table("giohang")->where("MaHangHoa","=",$Id)->where("MKH","=",$Id1)->update($data);
+        }
+
         function listJoin($table,$id,$value,$field,$table1,$relationship,$field1,$type,$type1="ASC"){
             return $this->db->table($table)->select($field)->join($type,$table1,$relationship)->where($id,"=",$value)->orderBy($field1,$type1)->get();
         }
@@ -49,6 +53,10 @@
 
         function updateField($table, $field,$compare,$value,$data){
             return $this->db->table($table)->where($field,$compare,$value)->update($data);
+        }
+
+        function existPR($table,$select,$field,$value,$field1,$value1){
+            return $this->db->table($table)->select($select)->where($field,"=",$value)->where($field1,"=",$value1)->get();
         }
     }
 ?>

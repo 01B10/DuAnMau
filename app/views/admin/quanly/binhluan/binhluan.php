@@ -15,24 +15,24 @@
                     <th>Cũ nhất</th>
                     <th>Action</th>
                 </thead>
-                <?php
-                    foreach($listBL as $item){
-                ?>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="" id="">
-                            </td>
-                            <td><?php echo $item["TenHangHoa"]?></td>
-                            <td><?php echo $item["SoBL"]?></td>
-                            <td><?php echo $item["MAX"]?></td>
-                            <td><?php echo $item["MIN"]?></td>
-                            <td><a href="?act=binhluanct&IdProduct=<?php echo $item["MaSP"]?>" class="sua">Chi tiết</a></td>
-                        </tr>
-                    </tbody>
-                <?php
-                    }
-                ?>
+                <tbody>
+                    <?php
+                        foreach($listBL as $item){
+                    ?>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" id="">
+                                </td>
+                                <td><?php echo $item["TenHangHoa"]?></td>
+                                <td><?php echo $item["SoBL"]?></td>
+                                <td><?php echo $item["MAX"]?></td>
+                                <td><?php echo $item["MIN"]?></td>
+                                <td><a href="?act=binhluanct&IdProduct=<?php echo $item["MaSP"]?>" class="sua">Chi tiết</a></td>
+                            </tr>
+                    <?php
+                        }
+                    ?>
+                </tbody>
         </table>
         <div class="btn">
             <input type="button" name="all" value="Chon tat ca">

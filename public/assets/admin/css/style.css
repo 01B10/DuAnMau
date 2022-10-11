@@ -274,6 +274,8 @@ th {
   color: lightseagreen;
 }
 
-#piechart {
-  margin: 0 auto;
+.fa-solid {
+  color: black;
+  display: block;
+  text-align: right;
 }

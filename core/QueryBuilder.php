@@ -101,8 +101,8 @@
             $sql = $this->query($sqlQuery);
 
             $this->resetQuery();
+            // echo $sqlQuery;
             $sqlQuery = "";
-
             if(!empty($sql)){
                 return $sql;
             }

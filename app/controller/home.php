@@ -47,21 +47,21 @@
             ]);
 
             if(!empty($_POST["btn"])){
-                $validate = $request->validate();
-            if(!$validate){
-                $this->data["errors"] = $request->errors();
-            }else{
-                $this->data["errors"] = "";
-                unset($this->data["field"]["confirm_password"]);
-                unset($this->data["field"]["btn"]);
-                $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
-                $check = $this->db->table("khachhang")->insert($this->data["field"]);
-                if($check){
-                    $this->data["field"] = "";
-                    echo "<script>alert('Đăng ký thành công!')</script>";
+                    $validate = $request->validate();
+                if(!$validate){
+                    $this->data["errors"] = $request->errors();
+                }else{
+                    $this->data["errors"] = "";
+                    unset($this->data["field"]["confirm_password"]);
+                    unset($this->data["field"]["btn"]);
+                    $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
+                    $check = $this->db->table("khachhang")->insert($this->data["field"]);
+                    if($check){
+                        $this->data["field"] = "";
+                        echo "<script>alert('Đăng ký thành công!')</script>";
+                    }
                 }
             }
-        }
             $this->data["content"] = "user/taikhoan/register";
             $this->render("layout/client_layout",$this->data);
         }
@@ -98,9 +98,18 @@
                     if(!$check){
                         echo "<script>alert('Tên đăng nhập hoặc mật khẩu không đúng!')</script>";
                     }else{
-                        $_SESSION["Login"]["user"] = $check[0];
                         $response = new Response();
-                        $response->redirect("Welcome");
+                        if($check[0]["VaiTro"] == 2){
+                            $_SESSION["Login"]["admin"] = $check[0];
+                            if(isset($_SESSION["Login"]["admin"])){
+                                $response->redirect("TrangChu");
+                            }
+                        }else{
+                            $_SESSION["Login"]["user"] = $check[0];
+                            if(isset($_SESSION["Login"]["user"])){
+                                $response->redirect("Welcome");
+                            }
+                        }
                     }
                 }
                 
@@ -182,8 +191,8 @@
             $this->render("layout/client_layout",$this->data);
         }
 
-        function danhmuc(){
-            if(isset($_GET["Iddm"])){
+        function listdm(){
+            if(!empty($_GET["Iddm"])){
                 $this->data["listProduct"] = $this->model_home->detailData("hanghoa","*","MaLoaiHang",$_GET["Iddm"]);
                 $this->data["TenLoai"] = $this->model_home->detailData("loai","TenLoai","MaLoai",$_GET["Iddm"]);
             }elseif(isset($_GET["key"])){
@@ -202,7 +211,7 @@
         }
 
         function formComment(){
-            $this->data["contentDef"] = "user/formComment";
+            $this->data["contentDef"] = "user/detailProduct/formComment";
             if(!empty($_POST["send"])){
                 if(isset($_SESSION["Login"]["user"])){
                     if(!empty($_POST["NoiDung"])){
@@ -218,6 +227,95 @@
                 }
             }
             $this->data["listBL"] = $this->model_home->listJoin("binhluan","MaSP",$_GET["IdProduct"],"*","khachhang","binhluan.MaKH = khachhang.MaKH","MaBL","INNER","DESC");
+            $this->render("layout/client_layout",$this->data);
+        }
+
+        function capnhattk(){
+            $request = new Request();
+
+            $this->data["field"] = $request->getFields();
+
+        
+            $request->rules([
+                "Email" => "required|email|min:6",
+                "MK" => "required|min:5",
+            ]);
+
+            $request->message([
+                "Email.required" => "Email không được để trống",
+                "Email.email" => "Định dạng email không hợp lệ",
+                "Email.min" => "Email phải lớn hơn 6 kí tự",
+                "HinhAnh.checkfile" => "Hình ảnh không được để trống",
+                "MK.required" => "Mật khẩu không được để trống",
+                "MK.min" => "Mật khẩu phải lớn hơn 5 kí tự",
+            ]);
+
+            if(!empty($_POST["btn"])){
+                if(empty($_FILES["HinhAnh"]["name"])){
+                    $this->data["field"]["HinhAnh"] = $_SESSION["Login"]["user"]["HinhAnh"];
+                }else{
+                    $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
+                }
+
+                $validate = $request->validate();
+                
+                if(!$validate){
+                    $this->data["errors"] = $request->errors();
+                }else{
+                    unset($this->data["field"]["btn"]);
+                    $this->data["errors"] = "";
+                    $check = $this->db->table("khachhang")->where("MaKH","=",$_SESSION["Login"]["user"]["MaKH"])->update($this->data["field"]);
+                    if($check){
+                        $this->data["field"] = "";
+                        $person = $this->model_home->detailData("khachhang","*","MaKH",$_SESSION["Login"]["user"]["MaKH"]);
+                        $_SESSION["Login"]["user"] = $person[0];
+                        move_uploaded_file($_FILES["HinhAnh"]["tmp_name"],_DIR_ROOT_."\public\assets\client\images\avatar"."\\".$_FILES["HinhAnh"]["name"]);
+                        header("Location: CapNhat?act=account");
+                    }
+                }
+            }
+            $this->data["content"] = "user/taikhoan/capnhattk";
+            $this->render("layout/client_layout",$this->data);
+        }
+
+        function addToCart(){
+            $response = new Response();
+            if(isset($_SESSION["Login"]["user"])){
+                $count = $this->model_home->existPR("giohang","COUNT(*) as sl","MaHangHoa",$_GET["IdProduct"],"MKH",$_SESSION["Login"]["user"]["MaKH"])[0];
+                if($count["sl"] == 1){
+                    $soluong = $this->model_home->existPR("giohang","SoLuong","MaHangHoa",$_GET["IdProduct"],"MKH",$_SESSION["Login"]["user"]["MaKH"])[0];
+                    print_r($soluong);
+                    $soluongSP = [
+                        "SoLuong" => $soluong["SoLuong"] + $_POST["SoLuong"]
+                    ];
+                    $this->model_home->updateSL($soluongSP,$_GET["IdProduct"],$_SESSION["Login"]["user"]["MaKH"]);
+                    $response->redirect("Trang-Chu");
+                }else{
+                    $this->data["field"] = $this->model_home->detailData("hanghoa","MaHangHoa","MaHangHoa",$_GET["IdProduct"])[0];
+                    $this->data["field"]["SoLuong"] = $_POST["SoLuong"];
+                    $this->data["field"]["MKH"] = $_SESSION["Login"]["user"]["MaKH"];
+                    $check = $this->model_home->insertData("giohang",$this->data["field"]);
+                    if($check){
+                        $response->redirect("Trang-Chu");
+                    }
+                }
+            }else{
+                $response->redirect("Login");
+            }
+        }
+
+        function GioHang(){
+            $response = new Response();
+            $this->data["content"] = "user/giohang/giohang";
+            if(isset($_SESSION["Login"]["user"])){
+                if(!isset($_GET["act"])){
+                    $this->data["giohang"] = $this->model_home->listJoin("giohang","MKH",$_SESSION["Login"]["user"]["MaKH"],"MaGioHang,HinhAnh,TenHangHoa,
+                    DonGia,SoLuong","hanghoa","giohang.MaHangHoa = hanghoa.MaHangHoa","MaGioHang","INNER","DESC");
+                }elseif($_GET["act"] == "DelCart"){
+                    $this->db->table("giohang")->where("MaGioHang","=",$_GET["MaGH"])->delete();
+                    header("Location: GioHang");
+                }
+            }
             $this->render("layout/client_layout",$this->data);
         }
     }

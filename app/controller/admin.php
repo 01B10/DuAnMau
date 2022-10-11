@@ -68,6 +68,8 @@
                                 }
                             }
                         }elseif($_GET["act"] == "DelLoai"){
+                            $MaSP = $this->db->table("hanghoa")->select("MaHangHoa")->where("MaLoaiHang","=",$_GET["Maloai"])->get()[0];
+                            $this->db->table("binhluan")->where("MaSP","=",$MaSP["MaHangHoa"])->delete();
                             $this->db->table("hanghoa")->where("MaLoaiHang","=","{$_GET["Maloai"]}")->delete();
                             $this->db->table("loai")->where("MaLoai","=","{$_GET["Maloai"]}")->delete();
                             header("Location: ?act=danhsach");
@@ -116,20 +118,20 @@
                     "VaiTro" => "required",
                 ]);
                 if(!empty($_POST["btn"])){
-                            $validate = $request->validate();
-                            if(!$validate){
-                                $this->data["errors"] = $request->errors();
-                            }else{
-                                $this->data["errors"] = "";
-                                unset($this->data["field"]["btn"]);
-                                unset($this->data["field"]["rmk"]);
-                                $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
-                                $check = $this->db->table("khachhang")->insert($this->data["field"]);
-                                if($check){
-                                    $this->data["field"] = "";
-                                    echo "<script>alert('Thêm mới dữ liệu thành công!')</script>";
-                                }
-                            }
+                    $validate = $request->validate();
+                    if(!$validate){
+                        $this->data["errors"] = $request->errors();
+                    }else{
+                        $this->data["errors"] = "";
+                        unset($this->data["field"]["btn"]);
+                        unset($this->data["field"]["rmk"]);
+                        $this->data["field"]["HinhAnh"] = $_FILES["HinhAnh"]["name"];
+                        $check = $this->db->table("khachhang")->insert($this->data["field"]);
+                        if($check){
+                            $this->data["field"] = "";
+                            echo "<script>alert('Thêm mới dữ liệu thành công!')</script>";
+                        }
+                    }
                 }
                 $this->data["content"] = "admin/quanly/khachhang/khachhang";
                 $this->render("layout/admin_layout",$this->data);
@@ -158,11 +160,8 @@
                                 }
                                 $validate = $request->validate();
 
-                                var_dump($validate);
-    
                                 if(!$validate){
                                     $this->data["errors"] = $request->errors();
-                                    print_r($this->data["errors"]);
                                 }else{
                                     unset($this->data["field"]["btn"]);
                                     unset($this->data["field"]["rmk"]);
@@ -276,7 +275,6 @@
                                 $validate = $request->validate();
                                 if(!$validate){
                                     $this->data["errors"] = $request->errors();
-                                    print_r($this->data["errors"]);
                                 }else{
                                     echo "Hello";
                                     $this->data["errors"] = "";
@@ -292,6 +290,8 @@
                                 }
                             }
                         }elseif($_GET["act"] == "DelProduct"){
+                            $this->db->table("giohang")->where("MaHangHoa","=","{$_GET["IdProduct"]}")->delete();
+                            $this->db->table("binhluan")->where("MaSP","=","{$_GET["IdProduct"]}")->delete();
                             $this->db->table("hanghoa")->where("MaHangHoa","=","{$_GET["IdProduct"]}")->delete();
                             header("Location: ?act=listProduct");
                         }

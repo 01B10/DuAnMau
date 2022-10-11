@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +44,7 @@
                     </ul>
                 </li>
                 <li class="move">
-                    <a href="#" class="fas fa-shopping-cart"></a>
+                    <a href="GioHang" class="fas fa-shopping-cart"></a>
                     <div class="dropaccount">
                         <?php ?>
                         <i class="fas fa-user-circle"></i>
@@ -51,7 +52,7 @@
                             <?php 
                                 if(isset($_SESSION["Login"]["user"])){
                             ?>
-                                <li><a href="Update">Cập nhật</a></li>
+                                <li><a href="CapNhat?act=account">Quản lí Tài Khoản</a></li>
                                 <li>
                                     <a href="LogOut"><i class="fa-solid fa-right-from-bracket"></i></a>
                                 </li>

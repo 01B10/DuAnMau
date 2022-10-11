@@ -14,23 +14,23 @@
                     <th>Người BL</th>
                     <th>Action</th>
                 </thead>
-                <?php
-                    foreach($listBL as $item){
-                ?>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="" id="">
-                            </td>
-                            <td><?php echo $item["NoiDung"]?></td>
-                            <td><?php echo $item["ThoiGianGui"]?></td>
-                            <td><?php echo $item["HoTen"]?></td>
-                            <td><a href="?act=xoabinhluan&IdBL=<?php echo $item["MaBL"]?>" class="xoa">Xóa</a></td>
-                        </tr>
-                    </tbody>
-                <?php
-                    }
-                ?>
+                <tbody>
+                    <?php
+                        foreach($listBL as $item){
+                    ?>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="" id="">
+                                </td>
+                                <td><?php echo $item["NoiDung"]?></td>
+                                <td><?php echo $item["ThoiGianGui"]?></td>
+                                <td><?php echo $item["HoTen"]?></td>
+                                <td><a href="?act=xoabinhluan&IdBL=<?php echo $item["MaBL"]?>" class="xoa">Xóa</a></td>
+                            </tr>
+                    <?php
+                        }
+                    ?>
+                </tbody>
         </table>
         <div class="btn">
             <input type="button" name="all" value="Chon tat ca">
