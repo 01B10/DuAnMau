@@ -11,6 +11,7 @@
     $routes["formcomment"] = "home/formComment";
     $routes["Welcome"] = "home/Welcome";
     $routes["addToCart"] = "home/addToCart";
+    $routes["addSPCT"] = "home/addToCartSP";
     $routes["GioHang"] = "home/GioHang";
     $routes["ForgotPassword"] = "home/ForgotPassword";
     $routes["TrangChu"] = "admin";

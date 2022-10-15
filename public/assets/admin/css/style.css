@@ -121,6 +121,7 @@ header {
   align-items: center;
   flex-direction: column;
   gap: 1rem;
+  padding-bottom: 2rem;
 }
 
 .listloaihang h2 {

@@ -129,6 +129,23 @@ nav ul li a:not(.list li a, .move a):hover {
   text-decoration: underline;
 }
 
+.MyCart {
+  position: relative;
+}
+
+.MyCart span {
+  position: absolute;
+  background-color: tomato;
+  border-radius: 50%;
+  font-size: 10px;
+  width: 15px;
+  height: 15px;
+  padding: 2px;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+}
+
 .dropdown {
   position: relative;
 }
@@ -183,16 +200,6 @@ nav ul li a:not(.list li a, .move a):hover {
   width: 100%;
   padding: 10px 0;
 }
-
-/* .list li:first-child {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-} */
-
-/* .list li:last-child {
-  border-bottom-right-radius: 5px;
-  border-bottom-left-radius: 5px;
-} */
 
 .dropdown .list li a:not(.SPLove .list li a):hover {
   background-color: lightgreen;
@@ -295,6 +302,10 @@ nav ul li a:not(.list li a, .move a):hover {
   color: red;
   font-weight: bold;
   font-size: 16px;
+}
+
+.ghinho {
+  margin: 0 auto;
 }
 
 .forgot {
@@ -415,19 +426,16 @@ nav ul li a:not(.list li a, .move a):hover {
 }
 
 .box-product {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
-  gap: 1.5rem;
-  justify-content: center;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
 }
 
 .box-item {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   inset: 0;
   border: 0.1rem solid rgba(0, 0, 0, 0.3);
   text-align: center;
@@ -436,7 +444,7 @@ nav ul li a:not(.list li a, .move a):hover {
 }
 
 .box-item img {
-  max-width: 14rem;
+  max-width: 10rem;
   margin: 0 auto;
 }
 
@@ -499,6 +507,7 @@ nav ul li a:not(.list li a, .move a):hover {
 
 .sale {
   position: absolute;
+  top: 10px;
   background-color: rgba(0, 222, 255, 0.4);
   color: red;
   font-size: 1.2rem;
@@ -511,6 +520,7 @@ nav ul li a:not(.list li a, .move a):hover {
   display: flex;
   flex-direction: column;
   position: absolute;
+  top: 10px;
   right: 0;
   transform: translateX(2.7rem);
   color: #2c2c54;
@@ -624,6 +634,7 @@ nav ul li a:not(.list li a, .move a):hover {
 }
 
 .boxSP {
+  position: relative;
   display: flex;
   align-items: center;
   padding: 1rem 0;
@@ -632,6 +643,12 @@ nav ul li a:not(.list li a, .move a):hover {
 
 .boxSP img {
   width: 250px;
+}
+
+.view {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .detail {

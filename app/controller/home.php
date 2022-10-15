@@ -8,6 +8,7 @@
             $this->model_home = $this->model("clientModel");
             $this->data["danhmuc"] = $this->model_home->listData("loai","*");
             $this->data["SPLove"] = $this->model_home->Top10("hanghoa","SoLuotXem","SoLuotXem","DESC",0,10);
+            $this->data["SL"] = $this->SoLuongSP();
         }
         
         function index(){
@@ -86,34 +87,38 @@
 
             if(!empty($_POST["btn"])){
                 $validate = $request->validate();
-            if(!$validate){
-                $this->data["errors"] = $request->errors();
-            }else{
-                $this->data["errors"] = "";
-                $data = $request->getFields();
-                unset($data["confirm_password"]);
-                if(!empty($this->data["field"])){
-                    $check = $this->db->table("khachhang")->where("HoTen","=",$this->data["field"]["HoTen"])
-                    ->where("MK","=",$this->data["field"]["MK"])->get();
-                    if(!$check){
-                        echo "<script>alert('Tên đăng nhập hoặc mật khẩu không đúng!')</script>";
-                    }else{
-                        $response = new Response();
-                        if($check[0]["VaiTro"] == 2){
-                            $_SESSION["Login"]["admin"] = $check[0];
-                            if(isset($_SESSION["Login"]["admin"])){
-                                $response->redirect("TrangChu");
-                            }
+                if(!$validate){
+                    $this->data["errors"] = $request->errors();
+                }else{
+                    $this->data["errors"] = "";
+                    $data = $request->getFields();
+                    unset($data["confirm_password"]);
+                    if(!empty($this->data["field"])){
+                        $check = $this->db->table("khachhang")->where("HoTen","=",$this->data["field"]["HoTen"])
+                        ->where("MK","=",$this->data["field"]["MK"])->get();
+                        if(!$check){
+                            echo "<script>alert('Tên đăng nhập hoặc mật khẩu không đúng!')</script>";
                         }else{
-                            $_SESSION["Login"]["user"] = $check[0];
-                            if(isset($_SESSION["Login"]["user"])){
-                                $response->redirect("Welcome");
+                            $response = new Response();
+                            if(isset($_POST["ghinho"])){
+                                setcookie("user",$this->data["field"]["HoTen"],time()+86400);
+                                setcookie("password",$this->data["field"]["MK"],time()+86400);
+                            }
+                            if($check[0]["VaiTro"] == 2){
+                                $_SESSION["Login"]["admin"] = $check[0];
+                                if(isset($_SESSION["Login"]["admin"])){
+                                    $response->redirect("TrangChu");
+                                }
+                            }else{
+                                $_SESSION["Login"]["user"] = $check[0];
+                                if(isset($_SESSION["Login"]["user"])){
+                                    $response->redirect("Welcome");
+                                }
                             }
                         }
                     }
+
                 }
-                
-            }
             }
             $this->data["content"] = "user/taikhoan/login";
             $this->render("layout/client_layout",$this->data);
@@ -185,7 +190,7 @@
                     "SoLuotXem" => $view[0]["SoLuotXem"] + 1
                 ];
                 $this->model_home->updateView($views,$_GET["IdProduct"]);
-                $this->data["db"] = "";
+                // $this->data["db"] = "";
             }
             $this->data["content"] = "user/detailProduct/Products";
             $this->render("layout/client_layout",$this->data);
@@ -284,7 +289,6 @@
                 $count = $this->model_home->existPR("giohang","COUNT(*) as sl","MaHangHoa",$_GET["IdProduct"],"MKH",$_SESSION["Login"]["user"]["MaKH"])[0];
                 if($count["sl"] == 1){
                     $soluong = $this->model_home->existPR("giohang","SoLuong","MaHangHoa",$_GET["IdProduct"],"MKH",$_SESSION["Login"]["user"]["MaKH"])[0];
-                    print_r($soluong);
                     $soluongSP = [
                         "SoLuong" => $soluong["SoLuong"] + $_POST["SoLuong"]
                     ];
@@ -304,9 +308,33 @@
             }
         }
 
-        function GioHang(){
+        function addToCartSP(){
             $response = new Response();
-            $this->data["content"] = "user/giohang/giohang";
+            if(isset($_SESSION["Login"]["user"])){
+                $count = $this->model_home->existPR("giohang","COUNT(*) as sl","MaHangHoa",$_GET["IdProduct"],"MKH",$_SESSION["Login"]["user"]["MaKH"])[0];
+                if($count["sl"] == 1){
+                    $soluong = $this->model_home->existPR("giohang","SoLuong","MaHangHoa",$_GET["IdProduct"],"MKH",$_SESSION["Login"]["user"]["MaKH"])[0];
+                    $soluongSP = [
+                        "SoLuong" => $soluong["SoLuong"] + 1
+                    ];
+                    $this->model_home->updateSL($soluongSP,$_GET["IdProduct"],$_SESSION["Login"]["user"]["MaKH"]);
+                    $response->redirect("SanPham?IdProduct=".$_GET["IdProduct"]);
+                    $response->redirect("Trang-Chu");
+                }else{
+                    $this->data["field"] = $this->model_home->detailData("hanghoa","MaHangHoa","MaHangHoa",$_GET["IdProduct"])[0];
+                    $this->data["field"]["SoLuong"] = 1;
+                    $this->data["field"]["MKH"] = $_SESSION["Login"]["user"]["MaKH"];
+                    $check = $this->model_home->insertData("giohang",$this->data["field"]);
+                    if($check){
+                        $response->redirect("SanPham?IdProduct=".$_GET["IdProduct"]);
+                    }
+                }
+            }else{
+                $response->redirect("Login");
+            }
+        }
+
+        function GioHang(){
             if(isset($_SESSION["Login"]["user"])){
                 if(!isset($_GET["act"])){
                     $this->data["giohang"] = $this->model_home->listJoin("giohang","MKH",$_SESSION["Login"]["user"]["MaKH"],"MaGioHang,HinhAnh,TenHangHoa,
@@ -316,7 +344,20 @@
                     header("Location: GioHang");
                 }
             }
+            $this->data["content"] = "user/giohang/giohang";
             $this->render("layout/client_layout",$this->data);
+        }
+
+        function SoLuongSP(){
+            if(isset($_SESSION["Login"]["user"])){
+                $this->data["giohang"] = $this->model_home->listJoin("giohang","MKH",$_SESSION["Login"]["user"]["MaKH"],"MaGioHang,HinhAnh,TenHangHoa,
+                DonGia,SoLuong","hanghoa","giohang.MaHangHoa = hanghoa.MaHangHoa","MaGioHang","INNER","DESC");
+                $soluong = 0;
+                foreach($this->data["giohang"] as $item){
+                    $soluong += $item["SoLuong"];
+                }
+                return $soluong;
+            }
         }
     }
 ?>

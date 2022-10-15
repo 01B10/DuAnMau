@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +43,14 @@
                     </ul>
                 </li>
                 <li class="move">
-                    <a href="GioHang" class="fas fa-shopping-cart"></a>
+                    <div class="MyCart">
+                        <a href="GioHang" class="fas fa-shopping-cart"></a>
+                        <?php 
+                            if(isset($SL)){
+                                echo "<span>".$SL."</span>";
+                            }
+                        ?>
+                    </div>
                     <div class="dropaccount">
                         <?php ?>
                         <i class="fas fa-user-circle"></i>
