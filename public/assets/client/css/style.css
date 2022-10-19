@@ -778,6 +778,7 @@ nav ul li a:not(.list li a, .move a):hover {
 
 .listloaihang table {
   background-color: #2c2c54;
+  margin: 0 auto;
   text-align: center;
   color: #fff;
   width: 80%;
@@ -816,7 +817,13 @@ th {
   background-color: tomato;
 }
 
-.btnCart input {
+.btnCart input,
+.btnCart button {
   padding: 5px 10px;
   cursor: pointer;
+}
+
+.boxProduct {
+  width: 100%;
+  text-align: center;
 }

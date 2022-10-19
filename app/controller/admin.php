@@ -50,6 +50,17 @@
                 $boolean = false;
                 foreach($act as $item){
                     if($_GET["act"] == $item){
+                        $this->data["listLoai"] = $this->admin_model->listLoai();
+                        if(isset($_POST["checkbox"])){
+                            $checkboxes = $_POST["checkbox"];
+                            foreach($checkboxes as $item){
+                                $MaSP = $this->admin_model->ItemData("hanghoa","MaHangHoa","MaLoaiHang",$item);
+                                $this->admin_model->deleteField("binhluan","MaSP","=",$MaSP[0]["MaHangHoa"]);
+                                $this->admin_model->deleteField("hanghoa","MaLoaiHang","=",$item);
+                                $this->admin_model->deleteField("loai","MaLoai","=",$item);
+                                header("Location: ?act=danhsach");
+                            }
+                        }
                         if($_GET["act"] == "fixLoai"){
                             unset($this->data["field"]["act"]);
                             unset($this->data["field"]["Maloai"]);
@@ -68,13 +79,16 @@
                                 }
                             }
                         }elseif($_GET["act"] == "DelLoai"){
-                            $MaSP = $this->db->table("hanghoa")->select("MaHangHoa")->where("MaLoaiHang","=",$_GET["Maloai"])->get()[0];
-                            $this->db->table("binhluan")->where("MaSP","=",$MaSP["MaHangHoa"])->delete();
-                            $this->db->table("hanghoa")->where("MaLoaiHang","=","{$_GET["Maloai"]}")->delete();
-                            $this->db->table("loai")->where("MaLoai","=","{$_GET["Maloai"]}")->delete();
+                            // $MaSP = $this->db->table("hanghoa")->select("MaHangHoa")->where("MaLoaiHang","=",$_GET["Maloai"])->get()[0];
+                            // $this->db->table("binhluan")->where("MaSP","=",$MaSP["MaHangHoa"])->delete();
+                            // $this->db->table("hanghoa")->where("MaLoaiHang","=","{$_GET["Maloai"]}")->delete();
+                            // $this->db->table("loai")->where("MaLoai","=","{$_GET["Maloai"]}")->delete();
+                            $MaSP = $this->admin_model->ItemData("hanghoa","MaHangHoa","MaLoaiHang",$_GET["Maloai"]);
+                            $this->admin_model->deleteField("binhluan","MaSP","=",$MaSP[0]["MaHangHoa"]);
+                            $this->admin_model->deleteField("hanghoa","MaLoaiHang","=",$_GET["Maloai"]);
+                            $this->admin_model->deleteField("loai","MaLoai","=",$_GET["Maloai"]);
                             header("Location: ?act=danhsach");
                         }
-                        $this->data["listLoai"] = $this->admin_model->listLoai();
                         $this->data["content"] = "admin/quanly/loaihang/$item";
                         $this->render("layout/admin_layout",$this->data);
                         $boolean = true;
@@ -146,11 +160,18 @@
                     "VaiTro" => "required",
                 ]);
 
-                
                 foreach($act as $item){
                     if($_GET["act"] == $item){
+                        $this->data["listClient"] = $this->admin_model->ListData("khachhang");
+                        if(isset($_POST["checkbox"])){
+                            $checkboxes = $_POST["checkbox"];
+                            foreach($checkboxes as $item){
+                                $this->admin_model->deleteField("giohang","MKH","=",$item);
+                                $this->admin_model->deleteField("khachhang","MaKH","=",$item);
+                                header("Location: ?act=listClient");
+                            }
+                        }
                         if($_GET["act"] == "fixClient"){
-                            $this->data["listClient"] = $this->admin_model->ListData("khachhang");
                             $this->data["itemClient"] = $this->admin_model->ItemData("khachhang","*","MaKH",$_GET["IdClient"]);
                             if(!empty($_POST["btn"])){
                                 if(empty($_FILES["HinhAnh"]["name"])){
@@ -178,8 +199,8 @@
                                 }
                             }
                         }elseif($_GET["act"] == "DelClient"){
-                            echo "Hello";
-                            $this->db->table("khachhang")->where("MaKH","=","{$_GET["IdClient"]}")->delete();
+                            $this->admin_model->deleteField("giohang","MKH","=",$_GET["IdClient"]);
+                            $this->admin_model->deleteField("khachhang","MaKH","=",$_GET["IdClient"]);
                             header("Location: ?act=listClient");
                         }
                         $this->data["listClient"] = $this->admin_model->ListData("khachhang");
@@ -260,9 +281,16 @@
                 ]);
                 foreach($act as $item){
                     if($_GET["act"] == $item){
-                        
                         $this->data["listProduct"] = $this->admin_model->ListData("hanghoa");
-                       
+                        if(isset($_POST["checkbox"])){
+                            $checkboxes = $_POST["checkbox"];
+                            foreach($checkboxes as $item){
+                                $this->admin_model->deleteField("giohang","MaHangHoa","=",$item);
+                                $this->admin_model->deleteField("binhluan","MaSP","=",$item);
+                                $this->admin_model->deleteField("hanghoa","MaHangHoa","=",$item);
+                                header("Location: ?act=listProduct");
+                            }
+                        }
                         if($_GET["act"] == "fixProduct"){
                             $this->data["itemProduct"] = $this->admin_model->ItemData("hanghoa","*","MaHangHoa",$_GET["IdProduct"]);
                             if(isset($_POST["btn"])){
@@ -276,7 +304,6 @@
                                 if(!$validate){
                                     $this->data["errors"] = $request->errors();
                                 }else{
-                                    echo "Hello";
                                     $this->data["errors"] = "";
                                     unset($this->data["field"]["btn"]);
                                     unset($this->data["field"]["act"]);
@@ -290,9 +317,9 @@
                                 }
                             }
                         }elseif($_GET["act"] == "DelProduct"){
-                            $this->db->table("giohang")->where("MaHangHoa","=","{$_GET["IdProduct"]}")->delete();
-                            $this->db->table("binhluan")->where("MaSP","=","{$_GET["IdProduct"]}")->delete();
-                            $this->db->table("hanghoa")->where("MaHangHoa","=","{$_GET["IdProduct"]}")->delete();
+                            $this->admin_model->deleteField("giohang","MaHangHoa","=",$_GET["IdProduct"]);
+                            $this->admin_model->deleteField("binhluan","MaSP","=",$_GET["IdProduct"]);
+                            $this->admin_model->deleteField("hanghoa","MaHangHoa","=",$_GET["IdProduct"]);
                             header("Location: ?act=listProduct");
                         }
 
@@ -312,17 +339,30 @@
             if(!isset($_GET["act"])){
                 $this->data["listBL"] = $this->admin_model->TongHopBL();
                 $this->data["content"] = "admin/quanly/binhluan/binhluan";
+                if(isset($_POST["checkbox"])){
+                    $checkboxes = $_POST["checkbox"];
+                    foreach($checkboxes as $item){
+                        $this->admin_model->deleteField("binhluan","MaSP","=",$item);
+                    }
+                    header("Location: binhluan");
+                }
                 $this->render("layout/admin_layout",$this->data);
             }else{
                 $boolean = false;
                 if($_GET["act"] == "binhluanct"){
                     $this->data["listBL"] = $this->admin_model->ChiTietBL();
                     $this->data["content"] = "admin/quanly/binhluan/binhluanct";
+                    if(isset($_POST["checkbox"])){
+                        $checkboxes = $_POST["checkbox"];
+                        foreach($checkboxes as $item){
+                            $this->admin_model->deleteField("binhluan","MaBL","=",$item);
+                        }
+                        header("Location: binhluan");
+                    }
                     $this->render("layout/admin_layout",$this->data);
                     $boolean = true;
                 }elseif($_GET["act"] == "xoabinhluan"){
                     $this->db->table("binhluan")->where("MaBL","=",$_GET["IdBL"])->delete();
-                    $id = $_GET["IdProduct"];
                     header("Location: binhluan");
                 }
                 if($boolean == false){

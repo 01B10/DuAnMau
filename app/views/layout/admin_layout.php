@@ -7,6 +7,7 @@
         } else {
             $this->render($content);
         }
+        $this->render("admin/block/footer");
     }else{
         $response = new Response();
         $response->redirect("Trang-Chu");

@@ -37,7 +37,7 @@
 
         function deleteField($table, $field,$compare,$value)
         {
-            return $this->db->table($table)->where($field,$compare,$value);
+            return $this->db->table($table)->where($field,$compare,$value)->delete();
         }
 
         function updateField($table, $field,$compare,$value,$data){
@@ -50,7 +50,7 @@
         }
 
         function ChiTietBL(){
-            return $this->db->table("binhluan")->select("binhluan.NoiDung,binhluan.ThoiGianGui,khachhang.HoTen")
+            return $this->db->table("binhluan")->select("binhluan.NoiDung,binhluan.ThoiGianGui,khachhang.HoTen,binhluan.MaBL")
             ->join("INNER","khachhang","binhluan.MaKH = khachhang.MaKH")->where("binhluan.MaSP","=",$_GET["IdProduct"])->get();
         }
 

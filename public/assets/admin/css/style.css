@@ -132,6 +132,7 @@ header {
   background-color: #2c2c54;
   text-align: center;
   color: #fff;
+  margin: 0 auto;
   width: 80%;
 }
 
@@ -142,6 +143,11 @@ header {
 .listloaihang table thead th:not(.listloaihang table thead th:first-child) {
   background-color: lightslategray;
   border: 1px solid transparent;
+}
+
+.boxProduct {
+  width: 100%;
+  text-align: center;
 }
 
 td,
@@ -168,7 +174,8 @@ th {
   background-color: tomato;
 }
 
-.btn input {
+.btn input,
+.btn button {
   padding: 5px 10px;
   cursor: pointer;
 }

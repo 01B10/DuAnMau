@@ -45,10 +45,10 @@
         {
             return $this->db->table($table)->insert($data);
         }
-
+        
         function deleteField($table, $field,$compare,$value)
         {
-            return $this->db->table($table)->where($field,$compare,$value);
+            return $this->db->table($table)->where($field,$compare,$value)->delete();
         }
 
         function updateField($table, $field,$compare,$value,$data){

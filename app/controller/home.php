@@ -343,6 +343,13 @@
                     $this->db->table("giohang")->where("MaGioHang","=",$_GET["MaGH"])->delete();
                     header("Location: GioHang");
                 }
+                if(isset($_POST["checkbox"])){
+                    $checkboxes = $_POST["checkbox"];
+                    foreach($checkboxes as $item){
+                        $this->model_home->deleteField("giohang","MaGioHang","=",$item);
+                        header("Location: GioHang");
+                    }
+                }
             }
             $this->data["content"] = "user/giohang/giohang";
             $this->render("layout/client_layout",$this->data);
@@ -353,11 +360,14 @@
                 $this->data["giohang"] = $this->model_home->listJoin("giohang","MKH",$_SESSION["Login"]["user"]["MaKH"],"MaGioHang,HinhAnh,TenHangHoa,
                 DonGia,SoLuong","hanghoa","giohang.MaHangHoa = hanghoa.MaHangHoa","MaGioHang","INNER","DESC");
                 $soluong = 0;
-                foreach($this->data["giohang"] as $item){
-                    $soluong += $item["SoLuong"];
+                if(!empty($this->data["giohang"])){
+                    foreach($this->data["giohang"] as $item){
+                        $soluong += $item["SoLuong"];
+                    }
                 }
                 return $soluong;
             }
         }
+
     }
 ?>
