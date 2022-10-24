@@ -24,7 +24,7 @@
         <nav>
             <ul>
                 <li><a href="Trang-Chu">Trang chủ</a></li>
-                <li><a href="">Giới thiệu</a></li>
+                <li><a href="GioiThieu">Giới thiệu</a></li>
                 <li><a href="Trang-Chu#contact">Liên hệ</a></li>
                 <li><a href="">Gợi ý</a></li>
                 <li><a href="">Hỏi đáp</a></li>
@@ -50,6 +50,9 @@
                                 echo "<span>".$SL."</span>";
                             }
                         ?>
+                    </div>
+                    <div class="announce">
+                        <a href="Donhang" class="fas fa-solid fa-bell"></a>
                     </div>
                     <div class="dropaccount">
                         <?php ?>

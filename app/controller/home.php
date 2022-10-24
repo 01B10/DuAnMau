@@ -369,5 +369,78 @@
             }
         }
 
+        function gioithieu(){
+            $this->data["content"] = "user/gt/gioithieu";
+            $this->render("layout/client_layout",$this->data);
+        }
+
+        function dathang(){
+            $request = new Request();
+            $this->data["field"] = $request->getFields();
+            $request->rules([
+                "HoTen" => "required|min:5|max:30",
+                "DiaChi" => "required",
+                "SDT" => "required|min:10",
+            ]);
+
+            $request->message([
+                "HoTen.required" => "Họ tên không được để trống",
+                "HoTen.min" => "Họ tên phải lớn hơn 5 kí tự",
+                "HoTen.max" => "Họ tên phải nhỏ hơn 30 kí tự",
+                "DiaChi.required" => "Địa chỉ không được để trống",
+                "SDT.required" => "Số điện thoại không được để trống",
+                "SDT.min" => "Số điện thoại phải tối thiểu 10 số",
+            ]);
+
+            if(!empty($_POST["btn"])){
+                    $validate = $request->validate();
+                if(!$validate){
+                    $this->data["errors"] = $request->errors();
+                }else{
+                    $this->data["errors"] = "";
+                    unset($this->data["field"]["btn"]);
+                    $this->data["field"]["MKH"] = $_SESSION["Login"]["user"]["MaKH"];
+                    $this->data["field"]["NgayDatHang"] = date("Y/m/d h:i:s");
+                    $this->data["field"]["SLSP"] = $this->data["SL"];
+                    $giohang = $this->model_home->listJoin("giohang","MKH",$_SESSION["Login"]["user"]["MaKH"],"MaGioHang,HinhAnh,
+                    DonGia,SoLuong,giohang.MaHangHoa","hanghoa","giohang.MaHangHoa = hanghoa.MaHangHoa","MaGioHang","INNER","DESC");
+                    $tong = 0;
+                    foreach($giohang as $item){
+                        $tong += $item["DonGia"] * $item["SoLuong"];
+                    }
+                    $this->data["field"]["TongTien"] = $tong;
+                    $check = $this->model_home->insertData("hoadon",$this->data["field"]);
+                    if($check){
+                        $dathang = $this->model_home->detailData("hoadon","MHD","MKH",$_SESSION["Login"]["user"]["MaKH"],"MHD","DESC");
+                        $this->data["dathang"]["MHD"] = $dathang[0]["MHD"];
+                        foreach($giohang as $item){
+                            $this->data["dathang"]["MHH"] = $item["MaHangHoa"];
+                            $this->data["dathang"]["SLSP"] = $item["SoLuong"];
+                            $this->model_home->insertData("dathang",$this->data["dathang"]);
+                        }
+                        $this->model_home->deleteField("giohang","MKH","=",$_SESSION["Login"]["user"]["MaKH"]);
+                        header("Location: Donhang");
+                    }
+                }
+            }
+
+            $this->data["content"] = "user/dathang/dathang";
+            $this->render("layout/client_layout",$this->data);
+        }
+
+        function donhang(){
+            if(isset($_SESSION["Login"]["user"])){
+                if(empty($_GET["act"])){
+                    $this->data["hoadon"] = $this->model_home->detailData("hoadon","MHD,NgayDatHang,SLSP,TongTien,PTTT,TinhTrang","MKH",$_SESSION["Login"]["user"]["MaKH"]);
+                }elseif($_GET["act"] == "cthoadon"){
+                    $this->data["giohang"] = $this->model_home->listJoin("hanghoa","dathang.MHD",$_GET["MHD"],"HinhAnh,TenHangHoa,
+                    DonGia,SLSP","dathang","hanghoa.MaHangHoa = dathang.MHH","MHH","INNER","DESC");
+                    $this->data["content"] = "user/dathang/cthoadon";
+                    $this->render("layout/client_layout",$this->data);
+                }
+            }
+            $this->data["content"] = "user/dathang/hoadon";
+            $this->render("layout/client_layout",$this->data);
+        }
     }
 ?>

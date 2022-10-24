@@ -386,5 +386,30 @@
                 $this->render("layout/admin_layout",$this->data);
            }
         }
+
+        function dshoadon(){
+            if(!isset($_GET["act"])){
+                $this->data["dshoadon"] = $this->admin_model->ListData("hoadon");
+                if(isset($_POST["checkbox"])){
+                    $checkboxes = $_POST["checkbox"];
+                    foreach($checkboxes as $item){
+                        $this->admin_model->deleteField("dathang","MHD","=",$item);
+                        $this->admin_model->deleteField("hoadon","MHD","=",$item);
+                    }
+                    header("Location: dshoadon");
+                }
+                 $this->data["content"] = "admin/quanly/hoadon/dshoadon";
+                 $this->render("layout/admin_layout",$this->data);
+            }elseif($_GET["act"] == "cthoadon"){
+                $this->data["giohang"] = $this->admin_model->listJoin("hanghoa","dathang.MHD",$_GET["MHD"],"HinhAnh,TenHangHoa,
+                DonGia,SLSP","dathang","hanghoa.MaHangHoa = dathang.MHH","MHH","INNER","DESC");
+                $this->data["content"] = "admin/quanly/hoadon/cthoadon";
+                 $this->render("layout/admin_layout",$this->data);
+            }elseif($_GET["act"] == "DelHoaDon"){
+                $this->admin_model->deleteField("dathang","MHD","=",$_GET["MHD"]);
+                $this->admin_model->deleteField("hoadon","MHD","=",$_GET["MHD"]);
+                header("Location: dshoadon");
+            }
+        }
     }
 ?>

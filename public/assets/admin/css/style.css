@@ -56,6 +56,10 @@ header {
   background-color: rgb(131, 131, 15);
 }
 
+.quanly li:nth-child(5) a {
+  background-color: rgb(167, 60, 18);
+}
+
 .quanly li:last-child a {
   background-color: lightslategrey;
 }
@@ -286,4 +290,17 @@ th {
   color: black;
   display: block;
   text-align: right;
+}
+
+.cthoadon {
+  padding: 5px 30px;
+  text-decoration: none;
+  background-color: #27ae60;
+  font-weight: bold;
+  border-radius: 5px;
+  color: white;
+}
+
+.listloaihang form table {
+  margin-bottom: 10px;
 }

@@ -21,8 +21,12 @@
             return $this->db->table($table)->where($field,">",0)->orderBy($orderBy,$type)->limit($start,$end)->get();
         }
 
-        function detailData($table,$select,$field,$value){
-            return $this->db->table($table)->select($select)->where($field,"=",$value)->get();
+        function detailData($table,$select,$field,$value,$orderBy="",$type=""){
+            if($orderBy != "" && $type != ""){
+                return $this->db->table($table)->select($select)->where($field,"=",$value)->orderBy($orderBy,$type)->get();
+            }else{
+                return $this->db->table($table)->select($select)->where($field,"=",$value)->get();
+            }
         }
 
         function searchSP($key){
@@ -46,7 +50,7 @@
             return $this->db->table($table)->insert($data);
         }
         
-        function deleteField($table, $field,$compare,$value)
+        function deleteField($table,$field,$compare,$value)
         {
             return $this->db->table($table)->where($field,$compare,$value)->delete();
         }

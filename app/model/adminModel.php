@@ -23,12 +23,15 @@
 
         function ItemData($table,$select,$field,$value){
                 return $this->db->table($table)->select($select)->where($field,"=",$value)->get();
-            }
+        }
         
         function getListTenLoai($maloai){
             return $this->db->table("loai")->select("TenLoai")->where("MaLoai","=",$maloai)->get();
         }
 
+        function listJoin($table,$id,$value,$field,$table1,$relationship,$field1,$type,$type1="ASC"){
+            return $this->db->table($table)->select($field)->join($type,$table1,$relationship)->where($id,"=",$value)->orderBy($field1,$type1)->get();
+        }
 
         function insertData($table, $data)
         {

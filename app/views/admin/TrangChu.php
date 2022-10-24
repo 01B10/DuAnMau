@@ -8,5 +8,6 @@
         <li><a href="hanghoa">Hàng Hóa</a></li>
         <li><a href="khachhang">Khách hàng</a></li>
         <li><a href="binhluan">Bình Luận</a></li>
+        <li><a href="dshoadon">Hóa đơn</a></li>
         <li><a href="thongke">Thống kê</a></li>
     </ul>
