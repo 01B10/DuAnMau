@@ -55,7 +55,10 @@
                             $checkboxes = $_POST["checkbox"];
                             foreach($checkboxes as $item){
                                 $MaSP = $this->admin_model->ItemData("hanghoa","MaHangHoa","MaLoaiHang",$item);
-                                $this->admin_model->deleteField("binhluan","MaSP","=",$MaSP[0]["MaHangHoa"]);
+                                foreach($MaSP as $mhh){
+                                    $this->admin_model->deleteField("giohang","MaHangHoa","=",$mhh["MaHangHoa"]);
+                                    $this->admin_model->deleteField("binhluan","MaSP","=",$mhh["MaHangHoa"]);
+                                }
                                 $this->admin_model->deleteField("hanghoa","MaLoaiHang","=",$item);
                                 $this->admin_model->deleteField("loai","MaLoai","=",$item);
                                 header("Location: ?act=danhsach");
@@ -79,12 +82,11 @@
                                 }
                             }
                         }elseif($_GET["act"] == "DelLoai"){
-                            // $MaSP = $this->db->table("hanghoa")->select("MaHangHoa")->where("MaLoaiHang","=",$_GET["Maloai"])->get()[0];
-                            // $this->db->table("binhluan")->where("MaSP","=",$MaSP["MaHangHoa"])->delete();
-                            // $this->db->table("hanghoa")->where("MaLoaiHang","=","{$_GET["Maloai"]}")->delete();
-                            // $this->db->table("loai")->where("MaLoai","=","{$_GET["Maloai"]}")->delete();
                             $MaSP = $this->admin_model->ItemData("hanghoa","MaHangHoa","MaLoaiHang",$_GET["Maloai"]);
-                            $this->admin_model->deleteField("binhluan","MaSP","=",$MaSP[0]["MaHangHoa"]);
+                            foreach($MaSP as $item){
+                                $this->admin_model->deleteField("giohang","MaHangHoa","=",$item["MaHangHoa"]);
+                                $this->admin_model->deleteField("binhluan","MaSP","=",$item["MaHangHoa"]);
+                            }
                             $this->admin_model->deleteField("hanghoa","MaLoaiHang","=",$_GET["Maloai"]);
                             $this->admin_model->deleteField("loai","MaLoai","=",$_GET["Maloai"]);
                             header("Location: ?act=danhsach");

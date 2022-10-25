@@ -13,5 +13,3 @@ unset.addEventListener("click", () => {
     item.checked = false;
   });
 });
-
-console.log("Hello");
